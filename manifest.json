@@ -5,7 +5,7 @@
   "orientation": "any",
   "start_url": "./",
   "scope": "./",
-  "name": "Web Bluetooth Terminal",
+  "name": "AZA PoC",
   "short_name": "Web Terminal",
   "description": "Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices",
   "theme_color": "#2196f3",
