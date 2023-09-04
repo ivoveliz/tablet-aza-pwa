@@ -1,7 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... (Tus metadatos y estilos) ... -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="#2196f3">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-starturl" content="./">
+    <meta name="description" content="Login Page">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('imagenfondo.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+    </style>
 </head>
 <body>
     <div class="login">
@@ -12,7 +68,7 @@
             <button type="button" onclick="isAuthenticated()">Login</button>
         </form>
     </div>
-    
+
     <script>
         async function isAuthenticated() {
           const username = document.getElementById('username').value;
