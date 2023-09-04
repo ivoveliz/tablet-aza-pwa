@@ -7,7 +7,21 @@ toolbox.precache([
   'js/companion.js',
   'js/main.js',
   'index.html',
+  'terminal.html',
 ]);
+
+// Estrategia de actualización para forzar la recarga de la PWA
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+});
 
 toolbox.router.default = toolbox.networkFirst;
 toolbox.options.networkTimeoutSeconds = 5;
