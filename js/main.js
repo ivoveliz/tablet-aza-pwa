@@ -21,79 +21,44 @@ const scrollElement = (element) => {
 
 const logToTerminal = (message, type = '') => {
   terminalContainer.insertAdjacentHTML('beforeend',
-    `<div${type && ` class="${type}"`}>${message}</div>`);
+      `<div${type && ` class="${type}"`}>${message}</div>`);
 
   if (isTerminalAutoScrolling) {
     scrollElement(terminalContainer);
   }
 };
 
-// Function to check if the user is authenticated
-const isAuthenticated = () => {
-  // Obtener el nombre de usuario y contraseña ingresados por el usuario.
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  // Verificar si el nombre de usuario y contraseña coinciden con los datos en users.json.
-  // Este es un ejemplo básico, debes implementar un método más seguro para la autenticación.
-  const users = [
-    {
-      "username": "admin",
-      "password": "1"
-    },
-    {
-      "username": "usuario2",
-      "password": "contrasena2"
-    },
-    {
-      "username": "usuario3",
-      "password": "contrasena3"
-    }
-  ];
-
-  const authenticatedUser = users.find((user) => {
-    return user.username === username && user.password === password;
-  });
-
-  return authenticatedUser !== undefined;
-};
-
 // Obtain configured instance.
 const terminal = new BluetoothTerminal();
 
 // Override `receive` method to log incoming data to the terminal.
-terminal.receive = function (data) {
+terminal.receive = function(data) {
   logToTerminal(data, 'in');
 };
 
 // Override default log method to output messages to the terminal and console.
-terminal._log = function (...messages) {
+terminal._log = function(...messages) {
+  // We can't use `super._log()` here.
   messages.forEach((message) => {
     logToTerminal(message);
     console.log(message); // eslint-disable-line no-console
   });
 };
 
-// Implement own send function to log outgoing data to the terminal.
+// Implement own send function to log outcoming data to the terminal.
 const send = (data) => {
-  terminal.send(data)
-    .then(() => logToTerminal(data, 'out'))
-    .catch((error) => logToTerminal(error));
+  terminal.send(data).
+      then(() => logToTerminal(data, 'out')).
+      catch((error) => logToTerminal(error));
 };
 
 // Bind event listeners to the UI elements.
 connectButton.addEventListener('click', () => {
-  if (!isAuthenticated()) {
-    // Redirect to the login page if not authenticated.
-    window.location.href = 'login.html';
-    return;
-  }
-
-  terminal.connect()
-    .then(() => {
-      deviceNameLabel.textContent = terminal.getDeviceName() ?
-        terminal.getDeviceName() : defaultDeviceName;
-    });
+  terminal.connect().
+      then(() => {
+        deviceNameLabel.textContent = terminal.getDeviceName() ?
+            terminal.getDeviceName() : defaultDeviceName;
+      });
 });
 
 disconnectButton.addEventListener('click', () => {
@@ -110,10 +75,10 @@ sendForm.addEventListener('submit', (event) => {
   inputField.focus();
 });
 
-// Switch terminal auto-scrolling if it scrolls out of the bottom.
+// Switch terminal auto scrolling if it scrolls out of bottom.
 terminalContainer.addEventListener('scroll', () => {
   const scrollTopOffset = terminalContainer.scrollHeight -
-    terminalContainer.offsetHeight - terminalAutoScrollingLimit;
+      terminalContainer.offsetHeight - terminalAutoScrollingLimit;
 
   isTerminalAutoScrolling = (scrollTopOffset < terminalContainer.scrollTop);
 });
