@@ -1,20 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="msapplication-TileColor" content="#2196f3">
-    <meta name="msapplication-config" content="browserconfig.xml">
-    <meta name="theme-color" content="#2196f3">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="msapplication-starturl" content="./">
-    <meta name="description" content="Login Page">
-    <title>Login</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="css/normalize.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <!-- ... (Tus metadatos y estilos) ... -->
 </head>
 <body>
     <div class="login">
@@ -22,33 +9,25 @@
         <form id="login-form">
             <input id="username" type="text" placeholder="Username">
             <input id="password" type="password" placeholder="Password">
-            <button type="submit" onclick="isAuthenticated(event)">Login</button>
+            <button type="button" onclick="isAuthenticated()">Login</button>
         </form>
     </div>
     
     <script>
-        // Function to check if the user is authenticated
-        async function isAuthenticated(event) {
-          // Obtener el nombre de usuario y contraseña ingresados por el usuario.
+        async function isAuthenticated() {
           const username = document.getElementById('username').value;
           const password = document.getElementById('password').value;
 
-          // Cargar usuarios desde users.json usando Fetch.
           const response = await fetch('users.json');
           const users = await response.json();
 
-          // Verificar si el nombre de usuario y contraseña coinciden con los datos en users.json.
           const authenticatedUser = users.find((user) => {
             return user.username === username && user.password === password;
           });
 
           if (authenticatedUser !== undefined) {
-            // Redireccionar a la página 'terminal.html' si el usuario está autenticado.
             window.location.href = 'terminal.html';
           }
-
-          // Prevenir el envío del formulario.
-          event.preventDefault();
         }
     </script>
 </body>
