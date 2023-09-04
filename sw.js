@@ -8,6 +8,7 @@ toolbox.precache([
   'js/main.js',
   'index.html',
   'terminal.html',
+  'checklist.html',
 ]);
 
 // Estrategia de actualización para forzar la recarga de la PWA

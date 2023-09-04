@@ -99,24 +99,33 @@
     </div>
 
     <script>
+        // Usuario maestro y contraseña maestra
+        const masterUsername = "admin";
+        const masterPassword = "masterpass";
+
         async function isAuthenticated() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Obtener usuarios del localStorage
-            const storedUsersJSON = localStorage.getItem('users.json');
-            const users = JSON.parse(storedUsersJSON) || [];
-
-            const authenticatedUser = users.find((user) => {
-                return user.username === username && user.password === password;
-            });
-
-            if (authenticatedUser !== undefined) {
+            if (username === masterUsername && password === masterPassword) {
+                // Iniciar sesión como usuario maestro
                 window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
             } else {
-                // Mostrar el popup de error con un mensaje personalizado
-                const errorPopup = document.getElementById('error-popup');
-                errorPopup.style.display = 'flex';
+                // Obtener usuarios del localStorage
+                const storedUsersJSON = localStorage.getItem('users.json');
+                const users = JSON.parse(storedUsersJSON) || [];
+
+                const authenticatedUser = users.find((user) => {
+                    return user.username === username && user.password === password;
+                });
+
+                if (authenticatedUser !== undefined) {
+                    window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
+                } else {
+                    // Mostrar el popup de error con un mensaje personalizado
+                    const errorPopup = document.getElementById('error-popup');
+                    errorPopup.style.display = 'flex';
+                }
             }
         }
 
