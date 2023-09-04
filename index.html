@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="msapplication-starturl" content="./">
     <meta name="description" content="Login Page">
-    <title>Login</title>
+    <title>Inicio Sesion</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="css/normalize.css" rel="stylesheet">
@@ -39,7 +39,7 @@
             margin-bottom: 20px;
         }
         input {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -57,33 +57,72 @@
         button:hover {
             background-color: #1976D2;
         }
+        /* Estilos para el popup */
+        .popup {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: #fff;
+            color: black; /* Cambiar el color del texto a negro */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body>
     <div class="login">
-        <h1>Login</h1>
+        <h1>Inicio Sesion</h1>
         <form id="login-form">
-            <input id="username" type="text" placeholder="Username">
-            <input id="password" type="password" placeholder="Password">
-            <button type="button" onclick="isAuthenticated()">Login</button>
+            <input id="username" type="text" placeholder="Usuario">
+            <input id="password" type="password" placeholder="Contraseña">
+            <button type="button" onclick="isAuthenticated()">Ingresar</button>
         </form>
+    </div>
+
+    <!-- Popup de error -->
+    <div id="error-popup" class="popup">
+        <div class="popup-content">
+            <p>Inicio de sesión fallido. Verifique su usuario y contraseña.</p>
+            <button onclick="closeErrorPopup()">Cerrar</button>
+        </div>
     </div>
 
     <script>
         async function isAuthenticated() {
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-          const response = await fetch('users.json');
-          const users = await response.json();
+            // Obtener usuarios del localStorage
+            const storedUsersJSON = localStorage.getItem('users.json');
+            const users = JSON.parse(storedUsersJSON) || [];
 
-          const authenticatedUser = users.find((user) => {
-            return user.username === username && user.password === password;
-          });
+            const authenticatedUser = users.find((user) => {
+                return user.username === username && user.password === password;
+            });
 
-          if (authenticatedUser !== undefined) {
-            window.location.href = 'terminal.html';
-          }
+            if (authenticatedUser !== undefined) {
+                window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
+            } else {
+                // Mostrar el popup de error con un mensaje personalizado
+                const errorPopup = document.getElementById('error-popup');
+                errorPopup.style.display = 'flex';
+            }
+        }
+
+        function closeErrorPopup() {
+            // Cerrar el popup de error
+            document.getElementById('error-popup').style.display = 'none';
         }
     </script>
 </body>

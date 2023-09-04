@@ -27,6 +27,14 @@ class BluetoothTerminal {
     this.setCharacteristicUuid(characteristicUuid);
     this.setReceiveSeparator(receiveSeparator);
     this.setSendSeparator(sendSeparator);
+
+    // Agregar una variable para habilitar la conexión automática.
+    this._autoConnect = true;
+
+    // Llamar a la función de conexión automáticamente.
+    if (this._autoConnect) {
+      this.connect(); // Esto inicia la conexión automáticamente al crear una instancia de BluetoothTerminal.
+    }
   }
 
   /**
@@ -40,7 +48,7 @@ class BluetoothTerminal {
     }
 
     if (!uuid) {
-      throw new Error('UUID cannot be a null');
+      throw new Error('UUID cannot be null');
     }
 
     this._serviceUuid = uuid;
@@ -53,11 +61,11 @@ class BluetoothTerminal {
   setCharacteristicUuid(uuid) {
     if (!Number.isInteger(uuid) &&
         !(typeof uuid === 'string' || uuid instanceof String)) {
-      throw new Error('UUID type is neither a number nor a string');
+      throw  Error('UUID type is neither a number nor a string');
     }
 
     if (!uuid) {
-      throw new Error('UUID cannot be a null');
+      throw new Error('UUID cannot be null');
     }
 
     this._characteristicUuid = uuid;
@@ -128,6 +136,7 @@ class BluetoothTerminal {
    * @param {string} data - Data
    */
   receive(data) {
+    console.log('Mensaje recibido del ESP32:', data);
     // Handle incoming data.
   }
 
@@ -175,7 +184,7 @@ class BluetoothTerminal {
             catch(reject);
       }));
     }
-
+    console.log(data)
     return promise;
   }
 
@@ -241,10 +250,9 @@ class BluetoothTerminal {
   _requestBluetoothDevice() {
     this._log('Requesting bluetooth device...');
   
-    navigator.bluetooth.requestDevice({
+    return navigator.bluetooth.requestDevice({
       filters: [{ name: 'ESP32' }],
       optionalServices: [
-       
         '0000ffe0-0000-1000-8000-00805f9b34fb'  // UUID adicional
       ]
     }).
@@ -350,22 +358,54 @@ class BluetoothTerminal {
    * @param {Object} event
    * @private
    */
+  // _handleCharacteristicValueChanged(event) {
+  //   const value = new TextDecoder().decode(event.target.value);
+  
+  //   for (const c of value) {
+  //     if (c === this._receiveSeparator) {
+  //       const data = this._receiveBuffer.trim();
+  //       this._receiveBuffer = '';
+  
+  //       if (data) {
+  //         //const mensajeRecibido = `Mensaje recibido del ESP32: ${data}`;
+  //         const mensajeRecibido = data;
+  //         this.receive(mensajeRecibido);
+  //       }
+  //     } else {
+  //       this._receiveBuffer += c;
+  //     }
+  //   }
+  // }
+  
   _handleCharacteristicValueChanged(event) {
     const value = new TextDecoder().decode(event.target.value);
-
-    for (const c of value) {
-      if (c === this._receiveSeparator) {
-        const data = this._receiveBuffer.trim();
-        this._receiveBuffer = '';
-
-        if (data) {
-          this.receive(data);
-        }
+  
+    try {
+      const jsonData = JSON.parse(value);
+  
+      if (jsonData.Newuser && jsonData.Newuser.username && jsonData.Newuser.password) {
+        // Cargar los datos actuales de users.json desde localStorage
+        const usersData = JSON.parse(localStorage.getItem('users.json')) || [];
+  
+        // Agregar el nuevo usuario al arreglo
+        usersData.push({
+          username: jsonData.Newuser.username,
+          password: jsonData.Newuser.password
+        });
+  
+        // Almacenar los datos actualizados de users.json en localStorage
+        localStorage.setItem('users.json', JSON.stringify(usersData));
+  
+        // Realizar cualquier acción adicional que necesites
+        this.receive('Nuevo usuario agregado: ' + jsonData.Newuser.username);
       } else {
-        this._receiveBuffer += c;
+        this.receive('JSON no válido o faltan campos');
       }
+    } catch (error) {
+      this.receive('Error al analizar el JSON: ' + error.message);
     }
   }
+  
 
   /**
    * Write to characteristic.
