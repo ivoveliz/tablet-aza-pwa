@@ -5,6 +5,7 @@ const disconnectButton = document.getElementById('disconnect');
 const terminalContainer = document.getElementById('terminal');
 const sendForm = document.getElementById('send-form');
 const inputField = document.getElementById('input');
+const inputturno = document.getElementById('turno');
 
 // Helpers.
 const defaultDeviceName = 'Terminal';
@@ -41,12 +42,13 @@ terminal._log = function(...messages) {
   // We can't use `super._log()` here.
   messages.forEach((message) => {
     logToTerminal(message);
-    console.log(message); // eslint-disable-line no-console
+    console.log("mensaje",message); // eslint-disable-line no-console
   });
 };
 
 // Implement own send function to log outcoming data to the terminal.
 const send = (data) => {
+  console.log(data)
   terminal.send(data).
       then(() => logToTerminal(data, 'out')).
       catch((error) => logToTerminal(error));
@@ -68,11 +70,21 @@ disconnectButton.addEventListener('click', () => {
 
 sendForm.addEventListener('submit', (event) => {
   event.preventDefault();
+ 
+  const valor = inputField.value;
+  const turno = inputturno.value;
 
-  send(inputField.value);
+  // Combina los valores en un formato que desees enviar.
+  const dataToSend = `${turno}, ${valor}`;
 
+  send(dataToSend);
+
+  // Limpia los campos después de enviar.
   inputField.value = '';
+  inputturno.value = '';
+
   inputField.focus();
+  inputturno.focus();
 });
 
 // Switch terminal auto scrolling if it scrolls out of bottom.

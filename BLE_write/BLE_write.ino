@@ -10,7 +10,7 @@
 BLEServer *pServer;
 BLECharacteristic *pCharacteristic;
 
-class MyCallbacks: public BLECharacteristicCallbacks {
+class MyCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
         std::string value = pCharacteristic->getValue();
 
@@ -32,6 +32,16 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     }
 };
 
+class MyServerCallbacks : public BLEServerCallbacks {
+    void onDisconnect(BLEServer *pServer) {
+        // El dispositivo central se desconectó, aquí puedes tomar medidas apropiadas.
+        Serial.println("Dispositivo central desconectado");
+        // Puedes reiniciar el dispositivo o intentar volver a conectarte.
+        // ESP.restart(); // Para reiniciar el ESP32
+        pServer->startAdvertising(); // Para volver a publicar la señal Bluetooth y esperar una nueva conexión
+    }
+};
+
 void setup() {
     Serial.begin(115200);
 
@@ -43,6 +53,7 @@ void setup() {
 
     BLEDevice::init(BLE_NAME);
     pServer = BLEDevice::createServer();
+    pServer->setCallbacks(new MyServerCallbacks());
     BLEService *pService = pServer->createService(SERVICE_UUID);
     pCharacteristic = pService->createCharacteristic(
         CHARACTERISTIC_UUID,

@@ -109,7 +109,9 @@
 
             if (username === masterUsername && password === masterPassword) {
                 // Iniciar sesión como usuario maestro
-                window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
+                //window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
+                window.location.href = 'checklist.html'; // Redirigir al usuario autenticado
+
             } else {
                 // Obtener usuarios del localStorage
                 const storedUsersJSON = localStorage.getItem('users.json');
@@ -120,7 +122,9 @@
                 });
 
                 if (authenticatedUser !== undefined) {
-                    window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
+                    // window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
+                    window.location.href = 'checklist.html'; // Redirigir al usuario autenticado
+
                 } else {
                     // Mostrar el popup de error con un mensaje personalizado
                     const errorPopup = document.getElementById('error-popup');
