@@ -19,8 +19,93 @@
     <link rel="shortcut icon" href="icons/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="css/normalize.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <style>
+        /* Estilos para el formulario */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto Mono', monospace;
+            background-image: url('imagenformulario.jpg'); /* Reemplaza 'imagenfondo.jpg' con la ruta de tu imagen de fondo */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Alinea los elementos al centro horizontalmente */
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            padding: 20px;
+            color: black; /* Texto en negro */
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5); /* Fondo semi transparente para mejor legibilidad */
+        }
+
+        .send-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .radio-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button#submit {
+            padding: 12px; /* Tamaño más grande */
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilos para el terminal (ajusta según tus necesidades) */
+        .terminal {
+            width: 250px;
+            height: 300px;
+            background-color: #f0f0f0;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Estilo para los botones según el estado */
+        .connected {
+            background-color: green;
+        }
+
+        .disconnected {
+            background-color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="app">
@@ -36,23 +121,43 @@
             </div>
         </div>
         <div id="terminal" class="terminal"></div>
-        <form id="send-form" class="send-form">
-            <select id="turno" aria-label="Turno">
-                <option value="A">Turno A</option>
-                <option value="B">Turno B</option>
-            </select>
-            
-            <select id="input" aria-label="Valor">
-                <option value="insertar">Insertar</option>
-                <option value="A">Turno A</option>
-                <option value="B">Turno B</option>
-            </select>
+        <div class="form-container">
+            <form id="send-form" class="send-form">
+                <label for="turno">Eleccion de turno:</label>
+                <select id="turno" aria-label="Turno">
+                    <option value="A">Turno A</option>
+                    <option value="B">Turno B</option>
+                </select>
 
-            <button type="submit" aria-label="Send">
-                <i class="material-icons">send</i>
-            </button>
-        </form>
+                <label for="aceite">Nivel de aceite:</label>
+                <input type="number" id="aceite" name="aceite" aria-label="Nivel de aceite">
+
+                <label for="combustible">Nivel de combustible:</label>
+                <input type="number" id="combustible" name="combustible" aria-label="Nivel de combustible">
+
+                <label for="kilometraje">Kilometraje:</label>
+                <input type="number" id="kilometraje" name="kilometraje" aria-label="Kilometraje">
+
+                <label>Limpieza automovil:</label>
+                <div class="radio-buttons">
+                    <input type="radio" id="cumple" name="limpieza" value="cumple" aria-label="Cumple">
+                    <label for="cumple">Cumple</label>
+                    <input type="radio" id="no-cumple" name="limpieza" value="no-cumple" aria-label="No Cumple">
+                    <label for="no-cumple">No Cumple</label>
+                </div>
+
+                <label for="inicio-turno">Calendario para inicio de turno:</label>
+                <input type="date" id="inicio-turno" name="inicio-turno" aria-label="Calendario para inicio de turno">
+
+                <label for="fin-turno">Calendario para fin de turno:</label>
+                <input type="date" id="fin-turno" name="fin-turno" aria-label="Calendario para fin de turno">
+
+                <button id="submit" type="button" aria-label="Enviar formulario">Enviar formulario</button>
+            </form>
+        </div>
     </div>
+
+    <!-- Tus scripts aquí -->
     <script src="js/BluetoothTerminal.js"></script>
     <script src="js/main.js"></script>
     <script src="js/companion.js" data-service-worker="sw.js"></script>
