@@ -3,7 +3,7 @@ const deviceNameLabel = document.getElementById('device-name');
 const connectButton = document.getElementById('connect');
 const disconnectButton = document.getElementById('disconnect');
 const terminalContainer = document.getElementById('terminal');
-const sendButton = document.getElementById('enviar'); // Cambiado el ID
+const sendForm = document.getElementById('send-form'); // Cambiado el ID
 const inputField = document.getElementById('aceite'); // Cambiado el ID
 const inputTurno = document.getElementById('turno');
 const inputCombustible = document.getElementById('combustible');
@@ -72,7 +72,9 @@ disconnectButton.addEventListener('click', () => {
   deviceNameLabel.textContent = defaultDeviceName;
 });
 
-sendButton.addEventListener('click', () => { // Cambiado el evento de 'submit' a 'click'
+sendForm.addEventListener('submit', (e) => { // Cambiado el evento a 'submit'
+  e.preventDefault(); // Evitar el envío predeterminado del formulario
+
   const valor = inputField.value;
   const turno = inputTurno.value;
   const combustible = inputCombustible.value;
