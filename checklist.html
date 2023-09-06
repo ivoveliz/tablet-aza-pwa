@@ -132,6 +132,17 @@
             padding: 10px;
             color: white; /* Texto en blanco */
         }
+
+        /* Estilos para el recuadro de usuario y contadores de tiempo */
+        .user-box {
+            position: absolute;
+            top: 20px; /* Ajusta la posición vertical según tu diseño */
+            right: 20px; /* Alinea al extremo derecho */
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi transparente para mejor legibilidad */
+            border-radius: 5px;
+            padding: 10px;
+            color: white; /* Texto en blanco */
+        }
     </style>
 </head>
 <body>
@@ -195,6 +206,13 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Recuadro de usuario y contadores de tiempo -->
+            <div class="user-box" id="user-box">
+                <div id="user-name">Nombre de usuario</div>
+                <!-- <div id="time-counter">Tiempo Actual: 00:00:00</div> -->
+                <div id="session-time">Tiempo de Sesión: 00:00:00</div>
+            </div>
         </div>
     </div>
 
@@ -223,6 +241,41 @@
             formContainer.style.display = "none";
             showFormButton.textContent = "Mostrar formulario";
         });
+
+        // JavaScript para actualizar el nombre de usuario y contadores de tiempo
+        const userBox = document.getElementById("user-box");
+        const userName = document.getElementById("user-name");
+        const timeCounter = document.getElementById("time-counter");
+        const sessionTime = document.getElementById("session-time");
+
+        // Nombre de usuario (reemplaza "Nombre de usuario" con el nombre real)
+        const nombreUsuario = "Usuario Ejemplo";
+
+        // Actualiza el nombre de usuario
+        userName.textContent = nombreUsuario;
+
+        // Variables para rastrear el tiempo de sesión y la hora actual
+        let segundosTranscurridos = 0;
+
+        // Función para actualizar los contadores de tiempo
+        function updateTimers() {
+            // const now = new Date();
+            // const hours = String(now.getHours()).padStart(2, "0");
+            // const minutes = String(now.getMinutes()).padStart(2, "0");
+            // const seconds = String(now.getSeconds()).padStart(2, "0");
+            // timeCounter.textContent = `Tiempo Actual: ${hours}:${minutes}:${seconds}`;
+            
+            // Actualiza el tiempo de sesión en HH:mm:ss
+            const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
+            const minutosSesion = String(Math.floor((segundosTranscurridos % 3600) / 60)).padStart(2, "0");
+            const segundosSesion = String(segundosTranscurridos % 60).padStart(2, "0");
+            sessionTime.textContent = `Tiempo de Sesion: ${horasSesion}:${minutosSesion}:${segundosSesion}`;
+            
+            segundosTranscurridos++;
+        }
+
+        // Actualiza los contadores de tiempo cada segundo
+        setInterval(updateTimers, 1000);
     </script>
 </body>
 </html>
