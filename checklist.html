@@ -206,15 +206,22 @@
         // JavaScript para mostrar/ocultar el formulario al hacer clic en "Check List"
         const formContainer = document.getElementById("form-container");
         const showFormButton = document.getElementById("show-form");
+        const submitButton = document.getElementById("submit");
 
         showFormButton.addEventListener("click", () => {
-            if (formContainer.style.display === "none") {
+            if (formContainer.style.display === "none" || formContainer.style.display === "") {
                 formContainer.style.display = "block";
                 showFormButton.textContent = "Ocultar formulario";
             } else {
                 formContainer.style.display = "none";
                 showFormButton.textContent = "Mostrar formulario";
             }
+        });
+
+        // JavaScript para ocultar el formulario al enviarlo
+        submitButton.addEventListener("click", () => {
+            formContainer.style.display = "none";
+            showFormButton.textContent = "Mostrar formulario";
         });
     </script>
 </body>
