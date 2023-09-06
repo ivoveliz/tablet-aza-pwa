@@ -190,8 +190,8 @@
             <!-- Recuadro de conexión bluetooth y botones -->
             
             <div class="connection-box">
-                <h2>Conexion</h2>
-                <div id="device-name">Estado conexion bluetooth</div>
+                <h2>Cuadro principal</h2>
+                <div id="device-name">Dar clic en conectar bluetooth</div>
 
                 <div class="buttons">
                     <button id="connect" type="button" aria-label="Connect">
@@ -210,8 +210,8 @@
             <!-- Recuadro de usuario y contadores de tiempo -->
             <div class="user-box" id="user-box">
                 <div id="user-name">Nombre de usuario</div>
-                <!-- <div id="time-counter">Tiempo Actual: 00:00:00</div> -->
-                <div id="session-time">Tiempo de Sesión: 00:00:00</div>
+                <div id="time-counter">Tiempo Actual: 00:00:00</div>
+                <div id="session-time">Tiempo de Sesion: 00:00:00</div>
             </div>
         </div>
     </div>
@@ -259,11 +259,11 @@
 
         // Función para actualizar los contadores de tiempo
         function updateTimers() {
-            // const now = new Date();
-            // const hours = String(now.getHours()).padStart(2, "0");
-            // const minutes = String(now.getMinutes()).padStart(2, "0");
-            // const seconds = String(now.getSeconds()).padStart(2, "0");
-            // timeCounter.textContent = `Tiempo Actual: ${hours}:${minutes}:${seconds}`;
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            const seconds = String(now.getSeconds()).padStart(2, "0");
+            timeCounter.textContent = `Tiempo Actual: ${hours}:${minutes}:${seconds}`;
             
             // Actualiza el tiempo de sesión en HH:mm:ss
             const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
