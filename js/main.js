@@ -62,14 +62,16 @@ const send = (data) => {
 connectButton.addEventListener('click', () => {
   terminal.connect()
     .then(() => {
-      deviceNameLabel.textContent = terminal.getDeviceName() ?
-        terminal.getDeviceName() : defaultDeviceName;
+      deviceNameLabel.textContent = "CONECTADO";
+      // deviceNameLabel.textContent = terminal.getDeviceName() ?
+      //   terminal.getDeviceName() : defaultDeviceName;
     });
 });
 
 disconnectButton.addEventListener('click', () => {
   terminal.disconnect();
-  deviceNameLabel.textContent = defaultDeviceName;
+  deviceNameLabel.textContent = "DESCONECTADO";
+  // deviceNameLabel.textContent = defaultDeviceName;
 });
 
 sendForm.addEventListener('submit', (e) => { // Cambiado el evento a 'submit'

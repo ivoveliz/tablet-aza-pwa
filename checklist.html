@@ -1,28 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="msapplication-TileColor" content="#2196f3">
-    <meta name="msapplication-config" content="browserconfig.xml">
-    <meta name="theme-color" content="#2196f3">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="msapplication-starturl" content="./">
-    <meta name="description" content="Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices">
-    <title>bluetooth terminal</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-    <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#2196f3">
-    <link rel="shortcut icon" href="icons/favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
+    <!-- Metadatos y estilos aquí -->
     <!-- Estilos personalizados -->
     <style>
-        /* Estilos para el formulario */
+        /* Estilos para el formulario y contenido principal */
         body {
             margin: 0;
             padding: 0;
@@ -36,24 +18,32 @@
         .app {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Alinea los elementos al centro horizontalmente */
+            align-items: center;
             justify-content: center;
             height: 100vh;
+            position: relative;
         }
 
+        .content {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        /* Estilos para el formulario */
         .form-container {
+            display: none; /* Ocultar el formulario inicialmente */
             padding: 20px;
-            color: black; /* Texto en negro */
+            color: black;
             border-radius: 10px;
-            background: rgba(0, 0, 0, 0.5); /* Fondo semi transparente para mejor legibilidad */
+            background: rgba(0, 0, 0, 0.5);
+            max-width: 300px;
+            margin-right: 20px; /* Espacio entre el formulario y el recuadro de conexión */
         }
 
         .send-form {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-width: 300px;
-            margin: 0 auto;
         }
 
         label {
@@ -83,6 +73,40 @@
             cursor: pointer;
         }
 
+        /* Estilos para el recuadro de conexión bluetooth y botones */
+        .connection-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px; /* Espacio entre los botones y el recuadro de conexión */
+        }
+
+        .buttons button {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button#connect {
+            background-color: green; /* Color cuando está conectado */
+            color: white;
+        }
+
+        button#disconnect {
+            background-color: red; /* Color cuando está desconectado */
+            color: white;
+        }
+
         /* Estilos para el terminal (ajusta según tus necesidades) */
         .terminal {
             width: 250px;
@@ -95,65 +119,82 @@
             overflow-y: scroll;
             border: 1px solid #ccc;
             border-radius: 5px;
+            display: none;
         }
 
-        /* Estilo para los botones según el estado */
-        .connected {
-            background-color: green;
-        }
-
-        .disconnected {
-            background-color: red;
+        /* Estilos para el recuadro de estado de conexión bluetooth */
+        .status-box {
+            position: absolute;
+            top: 20px; /* Ajusta la posición vertical según tu diseño */
+            right: 20px; /* Alinea al extremo derecho */
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi transparente para mejor legibilidad */
+            border-radius: 5px;
+            padding: 10px;
+            color: white; /* Texto en blanco */
         }
     </style>
 </head>
 <body>
     <div class="app">
-        <div class="toolbar">
-            <div id="device-name" class="name">Terminal</div>
-            <div class="buttons">
-                <button id="connect" type="button" aria-label="Connect">
-                    <i class="material-icons">bluetooth_connected</i>
-                </button>
-                <button id="disconnect" type="button" aria-label="Disconnect">
-                    <i class="material-icons">bluetooth_disabled</i>
-                </button>
-            </div>
-        </div>
+        <!-- Recuadro de estado de conexión bluetooth -->
+
+        <!-- Terminal (manteniendo el mismo ID) -->
         <div id="terminal" class="terminal"></div>
-        <div class="form-container">
-            <form id="send-form" class="send-form">
-                <label for="turno">Eleccion de turno:</label>
-                <select id="turno" aria-label="Turno">
-                    <option value="A">Turno A</option>
-                    <option value="B">Turno B</option>
-                </select>
 
-                <label for="aceite">Nivel de aceite:</label>
-                <input type="number" id="aceite" name="aceite" aria-label="Nivel de aceite">
+        <div class="content">
+            <div class="form-container" id="form-container">
+                <form id="send-form" class="send-form">
+                    <label for="turno">Eleccion de turno:</label>
+                    <select id="turno" aria-label="Turno">
+                        <option value="A">Turno A</option>
+                        <option value="B">Turno B</option>
+                    </select>
 
-                <label for="combustible">Nivel de combustible:</label>
-                <input type="number" id="combustible" name="combustible" aria-label="Nivel de combustible">
+                    <label for="aceite">Nivel de aceite:</label>
+                    <input type="number" id="aceite" name="aceite" aria-label="Nivel de aceite">
 
-                <label for="kilometraje">Kilometraje:</label>
-                <input type="number" id="kilometraje" name="kilometraje" aria-label="Kilometraje">
+                    <label for="combustible">Nivel de combustible:</label>
+                    <input type="number" id="combustible" name="combustible" aria-label="Nivel de combustible">
 
-                <label>Limpieza automovil:</label>
-                <div class="radio-buttons">
-                    <input type="radio" id="cumple" name="limpieza" value="cumple" aria-label="Cumple">
-                    <label for="cumple">Cumple</label>
-                    <input type="radio" id="no-cumple" name="limpieza" value="no-cumple" aria-label="No Cumple">
-                    <label for="no-cumple">No Cumple</label>
+                    <label for="kilometraje">Kilometraje:</label>
+                    <input type="number" id="kilometraje" name="kilometraje" aria-label="Kilometraje">
+
+                    <label>Limpieza automovil:</label>
+                    <div class="radio-buttons">
+                        <input type="radio" id="cumple" name="limpieza" value="cumple" aria-label="Cumple">
+                        <label for="cumple">Cumple</label>
+                        <input type="radio" id="no-cumple" name="limpieza" value="no-cumple" aria-label="No Cumple">
+                        <label for="no-cumple">No Cumple</label>
+                    </div>
+
+                    <label for="inicio-turno">Calendario para inicio de turno:</label>
+                    <input type="date" id="inicio-turno" name="inicio-turno" aria-label="Calendario para inicio de turno">
+
+                    <label for="fin-turno">Calendario para fin de turno:</label>
+                    <input type="date" id="fin-turno" name="fin-turno" aria-label="Calendario para fin de turno">
+
+                    <button id="submit" type="submit" aria-label="Enviar formulario">Enviar formulario</button>
+                </form>
+            </div>
+            <!-- Recuadro de conexión bluetooth y botones -->
+            
+            <div class="connection-box">
+                <h2>Conexion</h2>
+                <div id="device-name">Estado conexion bluetooth</div>
+
+                <div class="buttons">
+                    <button id="connect" type="button" aria-label="Connect">
+                        <i class="material-icons">Conectar bluetooth</i>
+                    </button>
+                    <button id="disconnect" type="button" aria-label="Disconnect">
+                        <i class="material-icons">Desconectar bluetooth</i>
+                    </button>
+                    <!-- Botón "Check List" para mostrar/ocultar el formulario -->
+                    <button id="show-form" type="button" aria-label="Mostrar formulario">
+                        <i class="material-icons">Mostrar formulario</i>
+                    </button>
                 </div>
-
-                <label for="inicio-turno">Calendario para inicio de turno:</label>
-                <input type="date" id="inicio-turno" name="inicio-turno" aria-label="Calendario para inicio de turno">
-
-                <label for="fin-turno">Calendario para fin de turno:</label>
-                <input type="date" id="fin-turno" name="fin-turno" aria-label="Calendario para fin de turno">
-
-                <button id="submit" type="submit" aria-label="Enviar formulario">Enviar formulario</button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -161,5 +202,20 @@
     <script src="js/BluetoothTerminal.js"></script>
     <script src="js/main.js"></script>
     <script src="js/companion.js" data-service-worker="sw.js"></script>
+    <script>
+        // JavaScript para mostrar/ocultar el formulario al hacer clic en "Check List"
+        const formContainer = document.getElementById("form-container");
+        const showFormButton = document.getElementById("show-form");
+
+        showFormButton.addEventListener("click", () => {
+            if (formContainer.style.display === "none") {
+                formContainer.style.display = "block";
+                showFormButton.textContent = "Ocultar formulario";
+            } else {
+                formContainer.style.display = "none";
+                showFormButton.textContent = "Mostrar formulario";
+            }
+        });
+    </script>
 </body>
 </html>
