@@ -130,6 +130,15 @@ class BluetoothTerminal {
     this._device = null;
   }
 
+    /**
+   * Data receiving handler which called whenever the new data comes from
+   * the connected device, override it to handle incoming data.
+   * @param {string} data - Data
+   */
+    receivestatus(data) {
+      console.log('receivestatus', data);
+      // Handle incoming data.
+    }
   /**
    * Data receiving handler which called whenever the new data comes from
    * the connected device, override it to handle incoming data.
@@ -398,13 +407,17 @@ class BluetoothTerminal {
   
         // Realizar cualquier acción adicional que necesites
         this.receive('Nuevo usuario agregado: ' + jsonData.Newuser.username);
+      } else if (jsonData.responseelectron && jsonData.responseelectron.status === "true" && jsonData.responseelectron.sendlora === "true") {
+        // Si es un "responseelectron" con status "true" y sendlora "true", mostrar por consola
+        this.receivestatus(true);
       } else {
-        this.receive('JSON no válido o faltan campos');
+        this.receivestatus(false);
       }
     } catch (error) {
       this.receive('Error al analizar el JSON: ' + error.message);
     }
   }
+  
   
 
   /**

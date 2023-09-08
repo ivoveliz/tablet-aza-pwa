@@ -119,7 +119,7 @@
             overflow-y: scroll;
             border: 1px solid #ccc;
             border-radius: 5px;
-            display: none;
+            /* display: none; */
         }
 
         /* Estilos para el recuadro de estado de conexión bluetooth */
@@ -142,6 +142,44 @@
             border-radius: 5px;
             padding: 10px;
             color: white; /* Texto en blanco */
+        }
+
+        /* Estilos para la ventana modal de carga */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -214,6 +252,14 @@
                 <div id="session-time">Tiempo de Sesion: 00:00:00</div>
             </div>
         </div>
+    </div>
+
+    <!-- Ventana modal de carga -->
+    <div id="loading-modal" class="modal">
+      <div class="modal-content">
+        <div class="loader"></div>
+        <p>Esperando respuesta de recepcion de formulario...</p>
+      </div>
     </div>
 
     <!-- Tus scripts aquí -->
