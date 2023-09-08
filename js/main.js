@@ -3,24 +3,24 @@ const deviceNameLabel = document.getElementById('device-name');
 const connectButton = document.getElementById('connect');
 const disconnectButton = document.getElementById('disconnect');
 const terminalContainer = document.getElementById('terminal');
-const sendForm = document.getElementById('send-form'); // Cambiado el ID
-const inputField = document.getElementById('aceite'); // Cambiado el ID
+const sendForm = document.getElementById('send-form');
+const inputField = document.getElementById('aceite');
 const inputTurno = document.getElementById('turno');
 const inputCombustible = document.getElementById('combustible');
 const inputKilometraje = document.getElementById('kilometraje');
 const inputLimpieza = document.querySelectorAll('input[name="limpieza"]');
 const inputInicioTurno = document.getElementById('inicio-turno');
 const inputFinTurno = document.getElementById('fin-turno');
-const loadingModal = document.getElementById('loading-modal'); // Ventana modal de carga
+const loadingModal = document.getElementById('loading-modal');
 
 // Helpers.
 const defaultDeviceName = 'Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
 let isTerminalAutoScrolling = true;
+let retryInterval; // Variable para el temporizador de reintentos.
 
 const scrollElement = (element) => {
   const scrollTop = element.scrollHeight - element.offsetHeight;
-
   if (scrollTop > 0) {
     element.scrollTop = scrollTop;
   }
@@ -29,7 +29,7 @@ const scrollElement = (element) => {
 const logToTerminal = (message, type = '') => {
   terminalContainer.insertAdjacentHTML('beforeend',
       `<div${type && ` class="${type}"`}>${message}</div>`);
-
+  deviceNameLabel.textContent = message;
   if (isTerminalAutoScrolling) {
     scrollElement(terminalContainer);
   }
@@ -44,8 +44,6 @@ const showLoadingModal = () => {
 const hideLoadingModal = () => {
   loadingModal.style.display = 'none';
 };
-
-let retryInterval; // Variable para el temporizador de reintentos.
 
 // Función para enviar el mensaje y gestionar los reintentos.
 const sendWithRetry = (dataToSend) => {
@@ -104,28 +102,29 @@ const send = (data) => {
   showLoadingModal();
 
   terminal.send(data)
-    .then(() => logToTerminal(data, 'out'))
+    // .then(() => logToTerminal(data, 'out'))
     .catch((error) => logToTerminal(error));
 };
 
 // Bind event listeners to the UI elements.
 connectButton.addEventListener('click', () => {
+  // Solicitar la conexión Bluetooth solo cuando el usuario hace clic en el botón de conexión.
   terminal.connect()
     .then(() => {
-      deviceNameLabel.textContent = "CONECTADO";
-      // deviceNameLabel.textContent = terminal.getDeviceName() ?
-      //   terminal.getDeviceName() : defaultDeviceName;
+      // deviceNameLabel.textContent = "CONECTADO";
+    })
+    .catch((error) => {
+      console.error('Error al conectar:', error);
     });
 });
 
 disconnectButton.addEventListener('click', () => {
   terminal.disconnect();
-  deviceNameLabel.textContent = "DESCONECTADO";
-  // deviceNameLabel.textContent = defaultDeviceName;
+  // deviceNameLabel.textContent = "DESCONECTADO DEL DISPOSITIVO";
 });
 
-sendForm.addEventListener('submit', (e) => { // Cambiado el evento a 'submit'
-  e.preventDefault(); // Evitar el envío predeterminado del formulario
+sendForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
   const valor = inputField.value;
   const turno = inputTurno.value;
@@ -135,12 +134,10 @@ sendForm.addEventListener('submit', (e) => { // Cambiado el evento a 'submit'
   const inicioTurno = inputInicioTurno.value;
   const finTurno = inputFinTurno.value;
 
-  // Combina los valores en el formato que deseas enviar.
   const dataToSend = `Turno: ${turno}, Aceite: ${valor}, Combustible: ${combustible}, Kilometraje: ${kilometraje}, Limpieza: ${limpieza}, Inicio de turno: ${inicioTurno}, Fin de turno: ${finTurno}`;
 
-  // Limpia los campos después de enviar.
   inputField.value = '';
-  inputTurno.value = 'A'; // Puedes establecer un valor predeterminado si lo deseas.
+  inputTurno.value = 'A';
   inputCombustible.value = '';
   inputKilometraje.value = '';
   inputLimpieza.forEach((radio) => {

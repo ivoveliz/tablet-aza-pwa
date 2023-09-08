@@ -29,7 +29,7 @@ class BluetoothTerminal {
     this.setSendSeparator(sendSeparator);
 
     // Agregar una variable para habilitar la conexión automática.
-    this._autoConnect = true;
+    this._autoConnect = false;
 
     // Llamar a la función de conexión automáticamente.
     if (this._autoConnect) {
@@ -220,7 +220,8 @@ class BluetoothTerminal {
         then((device) => this._connectDeviceAndCacheCharacteristic(device)).
         then((characteristic) => this._startNotifications(characteristic)).
         catch((error) => {
-          this._log(error);
+          this._log("Error intentando conectar al dispositivo bluetooth")
+          // this._log(error);
           return Promise.reject(error);
         });
   }
@@ -235,20 +236,20 @@ class BluetoothTerminal {
       return;
     }
 
-    this._log('Disconnecting from "' + device.name + '" bluetooth device...');
+    this._log('Desconectando del dispositivo bluetooth"' + device.name + '" ...');
 
     device.removeEventListener('gattserverdisconnected',
         this._boundHandleDisconnection);
 
     if (!device.gatt.connected) {
-      this._log('"' + device.name +
-          '" bluetooth device is already disconnected');
+      this._log('Dispositivo bluetooth ' + device.name +
+          ' ya está desconectado.');
       return;
     }
 
     device.gatt.disconnect();
 
-    this._log('"' + device.name + '" bluetooth device disconnected');
+    this._log('Dispositivo bluetooth ' +  device.name + ' desconectado');
   }
 
   /**
@@ -257,7 +258,7 @@ class BluetoothTerminal {
    * @private
    */
   _requestBluetoothDevice() {
-    this._log('Requesting bluetooth device...');
+    this._log('Solicitando conexion a dispositivo bluetooth...');
   
     return navigator.bluetooth.requestDevice({
       filters: [{ name: 'ESP32' }],
@@ -266,7 +267,7 @@ class BluetoothTerminal {
       ]
     }).
       then((device) => {
-        this._log('"' + device.name + '" bluetooth device selected');
+        this._log('Dispositivo bluetooth ' + device.name+' seleccionado');
   
         this._device = device; // Remember device.
         this._device.addEventListener('gattserverdisconnected',
@@ -288,21 +289,21 @@ class BluetoothTerminal {
       return Promise.resolve(this._characteristic);
     }
 
-    this._log('Connecting to GATT server...');
+    this._log('Conectando a dispositivo bluetooth '+ device.name+'....');
 
     return device.gatt.connect().
         then((server) => {
-          this._log('GATT server connected', 'Getting service...');
+          this._log('Servidor GATT conectando', 'Obteniendo servicio...');
 
           return server.getPrimaryService(this._serviceUuid);
         }).
         then((service) => {
-          this._log('Service found', 'Getting characteristic...');
+          this._log('Servicio encontrado', 'Obteniendo caracteristicas...');
 
           return service.getCharacteristic(this._characteristicUuid);
         }).
         then((characteristic) => {
-          this._log('Characteristic found');
+          this._log('Caracteristicas encontradas');
 
           this._characteristic = characteristic; // Remember characteristic.
 
@@ -317,12 +318,12 @@ class BluetoothTerminal {
    * @private
    */
   _startNotifications(characteristic) {
-    this._log('Starting notifications...');
+    this._log('Estableciendo canal de mensajeria...');
 
     return characteristic.startNotifications().
         then(() => {
-          this._log('Notifications started');
-
+          this._log('Canal de mensajeria iniciado');
+          this._log('Dispositivo bluetooth en linea..');
           characteristic.addEventListener('characteristicvaluechanged',
               this._boundHandleCharacteristicValueChanged);
         });
@@ -335,11 +336,11 @@ class BluetoothTerminal {
    * @private
    */
   _stopNotifications(characteristic) {
-    this._log('Stopping notifications...');
+    this._log('Deteniendo canal de mensajeria...');
 
     return characteristic.stopNotifications().
         then(() => {
-          this._log('Notifications stopped');
+          this._log('Canal de mensajeria detenido');
 
           characteristic.removeEventListener('characteristicvaluechanged',
               this._boundHandleCharacteristicValueChanged);
@@ -353,14 +354,36 @@ class BluetoothTerminal {
    */
   _handleDisconnection(event) {
     const device = event.target;
+    const maxReconnectionAttempts = 3; // Establece el número máximo de intentos de reconexión
+    let reconnectionAttempts = 0;
 
-    this._log('"' + device.name +
-        '" bluetooth device disconnected, trying to reconnect...');
+    this._log('Dispositivo bluetooth desconectado ' + device.name +
+        ' intentando volver a conectar...');
 
-    this._connectDeviceAndCacheCharacteristic(device).
-        then((characteristic) => this._startNotifications(characteristic)).
-        catch((error) => this._log(error));
-  }
+    const tryReconnect = () => {
+        reconnectionAttempts++;
+        this._log(`Intento de reconexion ${reconnectionAttempts}`);
+
+        if (reconnectionAttempts > maxReconnectionAttempts) {
+            this._log(`Maximo de intentos de reconexion superado (${maxReconnectionAttempts}).De clic en conectar bluetooth`);
+            return; // No intentar más conexiones
+        }
+
+        this._connectDeviceAndCacheCharacteristic(device)
+            .then((characteristic) => this._startNotifications(characteristic))
+            .catch((error) => {
+                // this._log(error);
+                this._log("No se puede realizar conexion con dispositivo bluetooth "+ device.name );
+                 
+                // Espera un tiempo antes de intentar la próxima reconexión (por ejemplo, 5 segundos)
+                setTimeout(tryReconnect, 5000);
+            });
+    };
+
+    // Inicia el primer intento de reconexión
+    tryReconnect();
+}
+
 
   /**
    * Handle characteristic value changed.
