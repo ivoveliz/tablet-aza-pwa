@@ -1,5 +1,6 @@
 // UI elements.
 const deviceNameLabel = document.getElementById('device-name');
+const userNameLabel = document.getElementById('user-name');
 const connectButton = document.getElementById('connect');
 const disconnectButton = document.getElementById('disconnect');
 const terminalContainer = document.getElementById('terminal');
@@ -30,6 +31,7 @@ const logToTerminal = (message, type = '') => {
   terminalContainer.insertAdjacentHTML('beforeend',
       `<div${type && ` class="${type}"`}>${message}</div>`);
   deviceNameLabel.textContent = message;
+  userNameLabel
   if (isTerminalAutoScrolling) {
     scrollElement(terminalContainer);
   }
@@ -134,7 +136,11 @@ sendForm.addEventListener('submit', (e) => {
   const inicioTurno = inputInicioTurno.value;
   const finTurno = inputFinTurno.value;
 
-  const dataToSend = `Turno: ${turno}, Aceite: ${valor}, Combustible: ${combustible}, Kilometraje: ${kilometraje}, Limpieza: ${limpieza}, Inicio de turno: ${inicioTurno}, Fin de turno: ${finTurno}`;
+  // Obtén el nombre de usuario desde localStorage
+  const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+  userNameLabel.textContent = username;
+  
+  const dataToSend = `Usuario: ${username}, Turno: ${turno}, Aceite: ${valor}, Combustible: ${combustible}, Kilometraje: ${kilometraje}, Limpieza: ${limpieza}, Inicio de turno: ${inicioTurno}, Fin de turno: ${finTurno}`;
 
   inputField.value = '';
   inputTurno.value = 'A';

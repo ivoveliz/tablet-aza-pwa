@@ -177,6 +177,25 @@
             margin: 0 auto;
         }
 
+        /* Estilos para el botón "Cerrar Sesión" */
+        /* Estilos para el botón "Cerrar Sesión" */
+    #logout-button {
+        margin-top: 10px; /* Espacio hacia abajo */
+        padding: 7.5px 15px; /* Tamaño de fuente reducido */
+        font-size: 12px; /* Tamaño de fuente más pequeño */
+        background-color: #ccc; /* Color de fondo gris */
+        color: #333; /* Texto en color más oscuro */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Transición de color de fondo */
+    }
+
+    #logout-button:hover {
+        background-color: #999; /* Color de fondo gris más oscuro al pasar el mouse */
+    }
+
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -250,6 +269,8 @@
                 <div id="user-name">Nombre de usuario</div>
                 <div id="time-counter">Tiempo Actual: 00:00:00</div>
                 <div id="session-time">Tiempo de Sesion: 00:00:00</div>
+                <!-- Agregar el botón "Cerrar Sesión" -->
+                <button id="logout-button">Cerrar Sesion</button>
             </div>
         </div>
     </div>
@@ -295,10 +316,8 @@
         const sessionTime = document.getElementById("session-time");
 
         // Nombre de usuario (reemplaza "Nombre de usuario" con el nombre real)
-        const nombreUsuario = "Usuario Ejemplo";
-
-        // Actualiza el nombre de usuario
-        userName.textContent = nombreUsuario;
+        const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+        userName.textContent = username; // Actualiza el nombre de usuario
 
         // Variables para rastrear el tiempo de sesión y la hora actual
         let segundosTranscurridos = 0;
@@ -322,6 +341,17 @@
 
         // Actualiza los contadores de tiempo cada segundo
         setInterval(updateTimers, 1000);
+
+        // Agregar el manejo del clic en el botón "Cerrar Sesión"
+        const logoutButton = document.getElementById("logout-button");
+
+        logoutButton.addEventListener("click", () => {
+            // Eliminar el nombre de usuario de localStorage
+            localStorage.removeItem('username');
+            
+            // Redirigir a la página "index.html"
+            window.location.href = 'index.html';
+        });
     </script>
 </body>
 </html>

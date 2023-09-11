@@ -109,6 +109,7 @@
 
             if (username === masterUsername && password === masterPassword) {
                 // Iniciar sesión como usuario maestro
+                localStorage.setItem('username', username); // Guardar el nombre de usuario en localStorage
                 //window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
                 window.location.href = 'checklist.html'; // Redirigir al usuario autenticado
 
@@ -122,6 +123,7 @@
                 });
 
                 if (authenticatedUser !== undefined) {
+                    localStorage.setItem('username', username); // Guardar el nombre de usuario en localStorage
                     // window.location.href = 'terminal.html'; // Redirigir al usuario autenticado
                     window.location.href = 'checklist.html'; // Redirigir al usuario autenticado
 
