@@ -324,6 +324,7 @@ class BluetoothTerminal {
         then(() => {
           this._log('Canal de mensajeria iniciado');
           this._log('Dispositivo bluetooth en linea..');
+          showFormButton.removeAttribute('disabled');
           characteristic.addEventListener('characteristicvaluechanged',
               this._boundHandleCharacteristicValueChanged);
         });
@@ -363,8 +364,9 @@ class BluetoothTerminal {
     const tryReconnect = () => {
         reconnectionAttempts++;
         this._log(`Intento de reconexion ${reconnectionAttempts}`);
-
+        showFormButton.setAttribute('disabled', 'true');
         if (reconnectionAttempts > maxReconnectionAttempts) {
+           showFormButton.setAttribute('disabled', 'true');
             this._log(`Maximo de intentos de reconexion superado (${maxReconnectionAttempts}).De clic en conectar bluetooth`);
             return; // No intentar más conexiones
         }
@@ -373,6 +375,7 @@ class BluetoothTerminal {
             .then((characteristic) => this._startNotifications(characteristic))
             .catch((error) => {
                 // this._log(error);
+                showFormButton.setAttribute('disabled', 'true');
                 this._log("No se puede realizar conexion con dispositivo bluetooth "+ device.name );
                  
                 // Espera un tiempo antes de intentar la próxima reconexión (por ejemplo, 5 segundos)
@@ -430,6 +433,9 @@ class BluetoothTerminal {
   
         // Realizar cualquier acción adicional que necesites
         this.receive('Nuevo usuario agregado: ' + jsonData.Newuser.username);
+       
+        this._log('Dispositivo bluetooth en linea..');
+        
       } else if (jsonData.responseelectron && jsonData.responseelectron.status === "true" && jsonData.responseelectron.sendlora === "true") {
         // Si es un "responseelectron" con status "true" y sendlora "true", mostrar por consola
         this.receivestatus(true);
@@ -438,6 +444,7 @@ class BluetoothTerminal {
       }
     } catch (error) {
       this.receive('Error al analizar el JSON: ' + error.message);
+      this._log('Dispositivo bluetooth en linea..');
     }
   }
   

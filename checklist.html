@@ -37,7 +37,12 @@
             border-radius: 10px;
             background: rgba(0, 0, 0, 0.5);
             max-width: 300px;
-            margin-right: 20px; /* Espacio entre el formulario y el recuadro de conexión */
+            margin-right: 20px; /* Espacio entre el formulario y el cuadro de conexión */
+            position: fixed;
+            top: 50%; /* Centrar verticalmente */
+            left: 50%; /* Centrar horizontalmente */
+            transform: translate(-50%, -50%); /* Centrar absolutamente */
+            z-index: 1; /* Colocar encima de otros elementos */
         }
 
         .send-form {
@@ -87,7 +92,7 @@
         .buttons {
             display: flex;
             gap: 10px;
-            margin-top: 20px; /* Espacio entre los botones y el recuadro de conexión */
+            margin-top: 20px; /* Espacio entre los botones y el cuadro de conexión */
         }
 
         .buttons button {
@@ -178,23 +183,21 @@
         }
 
         /* Estilos para el botón "Cerrar Sesión" */
-        /* Estilos para el botón "Cerrar Sesión" */
-    #logout-button {
-        margin-top: 10px; /* Espacio hacia abajo */
-        padding: 7.5px 15px; /* Tamaño de fuente reducido */
-        font-size: 12px; /* Tamaño de fuente más pequeño */
-        background-color: #ccc; /* Color de fondo gris */
-        color: #333; /* Texto en color más oscuro */
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s ease; /* Transición de color de fondo */
-    }
+        #logout-button {
+            margin-top: 10px; /* Espacio hacia abajo */
+            padding: 7.5px 15px; /* Tamaño de fuente reducido */
+            font-size: 12px; /* Tamaño de fuente más pequeño */
+            background-color: #ccc; /* Color de fondo gris */
+            color: #333; /* Texto en color más oscuro */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Transición de color de fondo */
+        }
 
-    #logout-button:hover {
-        background-color: #999; /* Color de fondo gris más oscuro al pasar el mouse */
-    }
-
+        #logout-button:hover {
+            background-color: #999; /* Color de fondo gris más oscuro al pasar el mouse */
+        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -258,7 +261,7 @@
                         <i class="material-icons">Desconectar bluetooth</i>
                     </button>
                     <!-- Botón "Check List" para mostrar/ocultar el formulario -->
-                    <button id="show-form" type="button" aria-label="Mostrar formulario">
+                    <button id="show-form" type="button" aria-label="Mostrar formulario" disabled>
                         <i class="material-icons">Mostrar formulario</i>
                     </button>
                 </div>
@@ -297,9 +300,13 @@
             if (formContainer.style.display === "none" || formContainer.style.display === "") {
                 formContainer.style.display = "block";
                 showFormButton.textContent = "Ocultar formulario";
+                // Ocultar el "Cuadro principal"
+                document.querySelector(".connection-box").style.display = "none";
             } else {
                 formContainer.style.display = "none";
                 showFormButton.textContent = "Mostrar formulario";
+                // Mostrar el "Cuadro principal"
+                document.querySelector(".connection-box").style.display = "block";
             }
         });
 
@@ -307,6 +314,8 @@
         submitButton.addEventListener("click", () => {
             formContainer.style.display = "none";
             showFormButton.textContent = "Mostrar formulario";
+            // Mostrar el "Cuadro principal" después de enviar el formulario
+            document.querySelector(".connection-box").style.display = "block";
         });
 
         // JavaScript para actualizar el nombre de usuario y contadores de tiempo

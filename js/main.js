@@ -113,15 +113,23 @@ connectButton.addEventListener('click', () => {
   // Solicitar la conexión Bluetooth solo cuando el usuario hace clic en el botón de conexión.
   terminal.connect()
     .then(() => {
-      // deviceNameLabel.textContent = "CONECTADO";
+    console.log("conectado")
+    
+    // showFormButton.removeAttribute('disabled');
     })
     .catch((error) => {
       console.error('Error al conectar:', error);
+  //     console.log("desconectado")
+
+  // showFormButton.setAttribute('disabled', 'true');
     });
 });
 
 disconnectButton.addEventListener('click', () => {
   terminal.disconnect();
+  console.log("desconectado")
+ 
+  showFormButton.setAttribute('disabled', 'true');
   // deviceNameLabel.textContent = "DESCONECTADO DEL DISPOSITIVO";
 });
 
