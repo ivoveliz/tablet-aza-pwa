@@ -24,7 +24,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-toolbox.router.default = toolbox.networkFirst;
+toolbox.router.default = toolbox.cacheFirst; // Cambia a cacheFirst para priorizar la caché
 toolbox.options.networkTimeoutSeconds = 5;
 
 toolbox.router.get('icons/*', toolbox.fastest);
