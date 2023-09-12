@@ -143,6 +143,17 @@
             document.getElementById('error-popup').style.display = 'none';
         }
     </script>
-  <script src="js/companion.js" data-service-worker="sw.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(function(registration) {
+          console.log('Service Worker registrado con éxito:', registration);
+        })
+        .catch(function(error) {
+          console.error('Error al registrar el Service Worker:', error);
+        });
+    }
+  </script>
+  
 </body>
 </html>
