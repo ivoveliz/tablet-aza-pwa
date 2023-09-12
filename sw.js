@@ -28,11 +28,15 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
       if (response) {
-        return response; // Devuelve la respuesta en caché si está disponible
+        return response;
       }
-      // Si no hay una respuesta en caché, no intentes recuperarla en línea
-      // Devuelve una respuesta vacía o una página de error personalizada
-      return new Response('Esta página no está disponible en línea. Por favor, consulta la versión offline.');
+      return fetch(event.request).then((response) => {
+        const clonedResponse = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, clonedResponse);
+        });
+        return response;
+      });
     })
   );
 });
