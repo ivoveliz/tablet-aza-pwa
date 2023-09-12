@@ -27,16 +27,25 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
+      // Si existe una respuesta en la caché, la devuelve
       if (response) {
         return response;
       }
-      return fetch(event.request).then((response) => {
-        const clonedResponse = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, clonedResponse);
+
+      // Si no hay una respuesta en la caché, intenta recuperarla en línea
+      return fetch(event.request)
+        .then((response) => {
+          // Almacena la respuesta en la caché
+          const clonedResponse = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, clonedResponse);
+          });
+          return response;
+        })
+        .catch(() => {
+          // Si la solicitud en línea falla, devuelve una respuesta personalizada
+          return new Response('Esta página no está disponible en línea. Por favor, consulta la versión offline.');
         });
-        return response;
-      });
     })
   );
 });
