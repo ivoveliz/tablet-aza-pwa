@@ -264,7 +264,7 @@
                     </button>
                     <!-- Botón "Check List" para mostrar/ocultar el formulario -->
                     <button id="show-form" type="button" aria-label="Mostrar formulario" disabled>
-                        <i class="material-icons">Mostrar formulario</i>
+                        <i class="material-icons">Realizar formulario</i>
                     </button>
                 </div>
             </div>
@@ -317,7 +317,7 @@
                 document.querySelector(".connection-box").style.display = "none";
             } else {
                 formContainer.style.display = "none";
-                showFormButton.textContent = "Mostrar formulario";
+                showFormButton.textContent = "Realizar formulario";
                 // Mostrar el "Cuadro principal"
                 document.querySelector(".connection-box").style.display = "block";
             }
@@ -326,7 +326,7 @@
         // JavaScript para ocultar el formulario al enviarlo
         submitButton.addEventListener("click", () => {
             formContainer.style.display = "none";
-            showFormButton.textContent = "Mostrar formulario";
+            showFormButton.textContent = "Realizar formulario";
             // Mostrar el "Cuadro principal" después de enviar el formulario
             document.querySelector(".connection-box").style.display = "block";
         });
