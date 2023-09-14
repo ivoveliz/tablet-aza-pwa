@@ -433,8 +433,11 @@ class BluetoothTerminal {
   
         // Realizar cualquier acción adicional que necesites
         this.receive('Nuevo usuario agregado: ' + jsonData.Newuser.username);
-       
-        this._log('Dispositivo bluetooth en linea..');
+
+        // Agregar un retraso de 2 segundos (2000 milisegundos)
+        setTimeout(() => {
+          this.receive('Dispositivo bluetooth en linea..');
+        }, 2000);
         
       } else if (jsonData.responseelectron && jsonData.responseelectron.status === "true" && jsonData.responseelectron.sendlora === "true") {
         // Si es un "responseelectron" con status "true" y sendlora "true", mostrar por consola
