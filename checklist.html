@@ -98,19 +98,19 @@
         }
 
         .buttons button {
-            padding: 12px;
+            padding: 8px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
         button#connect {
-            background-color: green; /* Color cuando está conectado */
+            background-color: rgb(2, 141, 2); /* Color cuando está conectado */
             color: white;
         }
 
         button#disconnect {
-            background-color: red; /* Color cuando está desconectado */
+            background-color: rgb(176, 4, 4); /* Color cuando está desconectado */
             color: white;
         }
 
@@ -257,14 +257,17 @@
 
                 <div class="buttons">
                     <button id="connect" type="button" aria-label="Connect">
-                        <i class="material-icons">Conectar bluetooth</i>
+                        <!-- <i class="material-icons">Conectar bluetooth</i> -->
+                        <h4>Conectar bluetooth</h4>
                     </button>
                     <button id="disconnect" type="button" aria-label="Disconnect">
-                        <i class="material-icons">Desconectar bluetooth</i>
+                        <!-- <i class="material-icons">Desconectar bluetooth</i> -->
+                        <h4>Desconectar bluetooth</h4>
                     </button>
                     <!-- Botón "Check List" para mostrar/ocultar el formulario -->
                     <button id="show-form" type="button" aria-label="Mostrar formulario" disabled>
-                        <i class="material-icons">Realizar formulario</i>
+                        <!-- <i class="material-icons">Realizar formulario</i> -->
+                        <h4>Realizar Formulario</h4>
                     </button>
                 </div>
             </div>
@@ -272,7 +275,7 @@
             <!-- Recuadro de usuario y contadores de tiempo -->
             <div class="user-box" id="user-box">
                 <div id="user-name">Nombre de usuario</div>
-                <div id="time-counter">Tiempo Actual: 00:00:00</div>
+                <div id="time-counter">Hora Actual: 00:00:00</div>
                 <div id="session-time">Tiempo de Sesion: 00:00:00</div>
                 <!-- Agregar el botón "Cerrar Sesión" -->
                 <button id="logout-button">Cerrar Sesion</button>
@@ -350,7 +353,7 @@
             const hours = String(now.getHours()).padStart(2, "0");
             const minutes = String(now.getMinutes()).padStart(2, "0");
             const seconds = String(now.getSeconds()).padStart(2, "0");
-            timeCounter.textContent = `Tiempo Actual: ${hours}:${minutes}:${seconds}`;
+            timeCounter.textContent = `Hora Actual: ${hours}:${minutes}:${seconds}`;
             
             // Actualiza el tiempo de sesión en HH:mm:ss
             const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
