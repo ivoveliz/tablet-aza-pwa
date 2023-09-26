@@ -4,12 +4,12 @@
 class BluetoothTerminal {
   /**
    * Create preconfigured Bluetooth Terminal instance.
-   * @param {!(number|string)} [serviceUuid=0xFFE0] - Service UUID
-   * @param {!(number|string)} [characteristicUuid=0xFFE1] - Characteristic UUID
+   * @param {!(number|string)} [serviceUuid=0x6e400001] - Service UUID
+   * @param {!(number|string)} [characteristicUuid=0x6e400002] - Characteristic UUID
    * @param {string} [receiveSeparator='\n'] - Receive separator
    * @param {string} [sendSeparator='\n'] - Send separator
    */
-  constructor(serviceUuid = 0xFFE0, characteristicUuid = 0xFFE1,
+  constructor(serviceUuid = 0x6e400001, characteristicUuid = 0x6e400002,
       receiveSeparator = '\n', sendSeparator = '\n') {
     // Used private variables.
     this._receiveBuffer = ''; // Buffer containing not separated data.
@@ -258,24 +258,37 @@ class BluetoothTerminal {
    * @private
    */
   _requestBluetoothDevice() {
-    this._log('Solicitando conexion a dispositivo bluetooth...');
+    this._log('Solicitando conexión a dispositivo Bluetooth...');
   
     return navigator.bluetooth.requestDevice({
-      filters: [{ name: 'ESP32' }],
-      optionalServices: [
-        '0000ffe0-0000-1000-8000-00805f9b34fb'  // UUID adicional
-      ]
+        acceptAllDevices: true,
+        optionalServices: [
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Service UUID como número hexadecimal
+        ]
     }).
-      then((device) => {
-        this._log('Dispositivo bluetooth ' + device.name+' seleccionado');
+    then((device) => {
+        this._log('Dispositivo Bluetooth ' + device.name + ' seleccionado');
   
-        this._device = device; // Remember device.
+        this._device = device; // Recordar el dispositivo.
         this._device.addEventListener('gattserverdisconnected',
           this._boundHandleDisconnection);
-  
-        return this._device;
-      });
-  }
+
+        // Ahora obtenemos y listamos los servicios del dispositivo
+        return this._device.gatt.connect()
+            .then(server => {
+                return server.getPrimaryServices();
+            })
+            .then(services => {
+                this._log('Servicios disponibles:');
+                services.forEach(service => {
+                    this._log(' - ' + service.uuid);
+                });
+            })
+            .then(() => {
+                return this._device; // Devolvemos el dispositivo para su uso posterior
+            });
+    });
+}
 
   /**
    * Connect device and cache characteristic.

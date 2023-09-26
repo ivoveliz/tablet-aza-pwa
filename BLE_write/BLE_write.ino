@@ -4,8 +4,8 @@
 #include <BLE2902.h>
 
 #define BLE_NAME "ESP32"
-#define SERVICE_UUID "0000ffe0-0000-1000-8000-00805f9b34fb"
-#define CHARACTERISTIC_UUID "0000ffe1-0000-1000-8000-00805f9b34fb"
+#define SERVICE_UUID "6e400001-b5a3-f393-e0a9-e50e24dcca9e"
+#define CHARACTERISTIC_UUID "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
 
 BLEServer *pServer;
 BLECharacteristic *pCharacteristic;
