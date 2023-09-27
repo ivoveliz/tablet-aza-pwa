@@ -4,12 +4,12 @@
 class BluetoothTerminal {
   /**
    * Create preconfigured Bluetooth Terminal instance.
-   * @param {!(number|string)} [serviceUuid=0x6e400001] - Service UUID
-   * @param {!(number|string)} [characteristicUuid=0x6e400002] - Characteristic UUID
+   * @param {!(number|string)} [serviceUuid=0xFFE0] - Service UUID
+   * @param {!(number|string)} [characteristicUuid=0xFFE1] - Characteristic UUID
    * @param {string} [receiveSeparator='\n'] - Receive separator
    * @param {string} [sendSeparator='\n'] - Send separator
    */
-  constructor(serviceUuid = 0x6e400001, characteristicUuid = 0x6e400002,
+  constructor(serviceUuid = 0xFFE0, characteristicUuid = 0xFFE1,
       receiveSeparator = '\n', sendSeparator = '\n') {
     // Used private variables.
     this._receiveBuffer = ''; // Buffer containing not separated data.
@@ -261,15 +261,16 @@ class BluetoothTerminal {
     this._log('Solicitando conexión a dispositivo Bluetooth...');
   
     return navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
+        filters: [{ name: 'ESP32-CE5DFE32EDC2' }],
         optionalServices: [
-          '0000ffe0-0000-1000-8000-00805f9b34fb', // Service UUID como número hexadecimal
+            '0000ffe0-0000-1000-8000-00805f9b34fb',
+            '00001800-0000-1000-8000-00805f9b34fb' // UUID adicional
         ]
     }).
     then((device) => {
         this._log('Dispositivo Bluetooth ' + device.name + ' seleccionado');
   
-        this._device = device; // Recordar el dispositivo.
+        this._device = device; // Remember device.
         this._device.addEventListener('gattserverdisconnected',
           this._boundHandleDisconnection);
 
@@ -289,6 +290,7 @@ class BluetoothTerminal {
             });
     });
 }
+
 
   /**
    * Connect device and cache characteristic.
