@@ -113,6 +113,9 @@ connectButton.addEventListener('click', () => {
   // Solicitar la conexión Bluetooth solo cuando el usuario hace clic en el botón de conexión.
   terminal.connect()
     .then(() => {
+      const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+      const dataToSend = `{Usuario: ${username},status:conected}`
+      terminal.send(dataToSend)
     console.log("conectado")
     
     // showFormButton.removeAttribute('disabled');
