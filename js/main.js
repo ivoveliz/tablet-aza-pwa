@@ -14,6 +14,7 @@ const inputInicioTurno = document.getElementById('inicio-turno');
 const inputFinTurno = document.getElementById('fin-turno');
 const loadingModal = document.getElementById('loading-modal');
 
+
 // Helpers.
 const defaultDeviceName = 'Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
@@ -114,7 +115,7 @@ connectButton.addEventListener('click', () => {
   terminal.connect()
     .then(() => {
       const username = localStorage.getItem('username') || 'Usuario Predeterminado';
-      const dataToSend = `{Usuario: ${username},status:conected}`
+      const dataToSend = `{Usuario: ${username},statussesion:conected}`
       terminal.send(dataToSend)
     console.log("conectado")
     
@@ -136,6 +137,7 @@ disconnectButton.addEventListener('click', () => {
   // deviceNameLabel.textContent = "DESCONECTADO DEL DISPOSITIVO";
 });
 
+ 
 sendForm.addEventListener('submit', (e) => {
   e.preventDefault();
 

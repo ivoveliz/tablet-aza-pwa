@@ -371,12 +371,17 @@
         const logoutButton = document.getElementById("logout-button");
 
         logoutButton.addEventListener("click", () => {
-            // Eliminar el nombre de usuario de localStorage
-            localStorage.removeItem('username');
-            
-            // Redirigir a la página "index.html"
-            window.location.href = 'index.html';
-        });
+    const dataToSend = `{Usuario: ${username}, statussesion: desconected}`;
+    terminal.send(dataToSend);
+
+    // Eliminar el nombre de usuario de localStorage
+    localStorage.removeItem('username');
+
+    // Agregar un retraso de 1 segundo antes de redirigir a la página "index.html"
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 1000); // 1000 milisegundos = 1 segundo
+});
     </script>
 </body>
 </html>
