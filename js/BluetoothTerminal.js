@@ -263,7 +263,7 @@ class BluetoothTerminal {
     return navigator.bluetooth.requestDevice({
         acceptAllDevices: true,
         optionalServices: [
-          '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Service UUID como número hexadecimal
+          '0000ffe0-0000-1000-8000-00805f9b34fb', // Service UUID como número hexadecimal
         ]
     }).
     then((device) => {
