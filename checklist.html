@@ -47,6 +47,17 @@
             z-index: 1; /* Colocar encima de otros elementos */
         }
 
+        .form-container #close-form {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
         .send-form {
             display: flex;
             flex-direction: column;
@@ -216,17 +227,24 @@
 
         <div class="content">
             <div class="form-container" id="form-container">
+                <button id="close-form" aria-label="Cerrar formulario">X</button>
                 <form id="send-form" class="send-form">
-                    <label for="turno">Eleccion de turno:</label>
-                    <select id="turno" aria-label="Turno">
+
+                    <label for="nombre-operador">Nombre operador:</label>
+                    <input type="text" id="nombre-operador" name="nombre-operador" aria-label="nombre-operador">
+                    <label for="turno">Turno:</label>
+                    <input type="text" id="turno" name="turno" aria-label="turno">
+                    <label for="inicio-turno">Fecha de turno:</label>
+                    <input type="date" id="inicio-turno" name="inicio-turno" aria-label="Calendario para inicio de turno">
+
+                    <!-- <select id="turno" aria-label="Turno">
                         <option value="A">Turno A</option>
                         <option value="B">Turno B</option>
-                    </select>
-
-                    <label for="aceite">Nivel de aceite:</label>
+                    </select> -->
+                    <label for="aceite">Nivel de aceite %:</label>
                     <input type="number" id="aceite" name="aceite" aria-label="Nivel de aceite">
 
-                    <label for="combustible">Nivel de combustible:</label>
+                    <label for="combustible">Nivel de combustible %:</label>
                     <input type="number" id="combustible" name="combustible" aria-label="Nivel de combustible">
 
                     <label for="kilometraje">Kilometraje:</label>
@@ -240,10 +258,8 @@
                         <label for="no-cumple">No Cumple</label>
                     </div>
 
-                    <label for="inicio-turno">Calendario para inicio de turno:</label>
-                    <input type="date" id="inicio-turno" name="inicio-turno" aria-label="Calendario para inicio de turno">
-
-                    <label for="fin-turno">Calendario para fin de turno:</label>
+                   
+                    <label for="fin-turno">Fecha de ultimo mantenimiento:</label>
                     <input type="date" id="fin-turno" name="fin-turno" aria-label="Calendario para fin de turno">
 
                     <button id="submit" type="submit" aria-label="Enviar formulario">Enviar formulario</button>
@@ -333,7 +349,14 @@
             // Mostrar el "Cuadro principal" después de enviar el formulario
             document.querySelector(".connection-box").style.display = "block";
         });
+        const closeFormButton = document.getElementById("close-form");
 
+        closeFormButton.addEventListener("click", () => {
+            formContainer.style.display = "none";
+            showFormButton.textContent = "Realizar formulario";
+            // Mostrar el "Cuadro principal"
+            document.querySelector(".connection-box").style.display = "block";
+        });
         // JavaScript para actualizar el nombre de usuario y contadores de tiempo
         const userBox = document.getElementById("user-box");
         const userName = document.getElementById("user-name");
@@ -370,9 +393,22 @@
         // Agregar el manejo del clic en el botón "Cerrar Sesión"
         const logoutButton = document.getElementById("logout-button");
 
-        logoutButton.addEventListener("click", () => {
-    const dataToSend = `{Usuario: ${username}, statussesion: desconected}`;
-    terminal.send(dataToSend);
+logoutButton.addEventListener("click", () => {
+    // Obtener el tiempo de sesión actual en formato HH:mm:ss
+    const tiempoSesion = sessionTime.textContent;
+    
+    // Crear el objeto de datos para enviar, incluyendo el nombre de usuario y el tiempo de sesión
+    const dataToSend = {
+        Usuario: username,
+        statussesion: 'desconected',
+        TiempoSesion: tiempoSesion
+    };
+
+    // Convertir el objeto de datos a formato JSON
+    const jsonData = JSON.stringify(dataToSend);
+
+    // Enviar los datos
+    terminal.send(jsonData);
 
     // Eliminar el nombre de usuario de localStorage
     localStorage.removeItem('username');
@@ -382,6 +418,7 @@
         window.location.href = 'index.html';
     }, 1000); // 1000 milisegundos = 1 segundo
 });
+
     </script>
 </body>
 </html>

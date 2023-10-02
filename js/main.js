@@ -5,6 +5,8 @@ const connectButton = document.getElementById('connect');
 const disconnectButton = document.getElementById('disconnect');
 const terminalContainer = document.getElementById('terminal');
 const sendForm = document.getElementById('send-form');
+const loadingModal = document.getElementById('loading-modal');
+//formulario
 const inputField = document.getElementById('aceite');
 const inputTurno = document.getElementById('turno');
 const inputCombustible = document.getElementById('combustible');
@@ -12,7 +14,8 @@ const inputKilometraje = document.getElementById('kilometraje');
 const inputLimpieza = document.querySelectorAll('input[name="limpieza"]');
 const inputInicioTurno = document.getElementById('inicio-turno');
 const inputFinTurno = document.getElementById('fin-turno');
-const loadingModal = document.getElementById('loading-modal');
+const inputNombreOperador = document.getElementById('nombre-operador');
+
 
 
 // Helpers.
@@ -148,12 +151,17 @@ sendForm.addEventListener('submit', (e) => {
   const limpieza = [...inputLimpieza].find((radio) => radio.checked)?.value || '';
   const inicioTurno = inputInicioTurno.value;
   const finTurno = inputFinTurno.value;
+  const operador=inputNombreOperador.value;
 
   // Obtén el nombre de usuario desde localStorage
   const username = localStorage.getItem('username') || 'Usuario Predeterminado';
   userNameLabel.textContent = username;
   
-  const dataToSend = `Usuario: ${username}, Turno: ${turno}, Aceite: ${valor}, Combustible: ${combustible}, Kilometraje: ${kilometraje}, Limpieza: ${limpieza}, Inicio de turno: ${inicioTurno}, Fin de turno: ${finTurno}`;
+  const dataToSend = `Usuario: ${username}, Turno: ${turno},
+  operador: ${operador},
+  Aceite: ${valor}, Combustible: ${combustible}, 
+  Kilometraje: ${kilometraje}, Limpieza: ${limpieza},
+  Inicio de turno: ${inicioTurno},Fin de turno: ${finTurno}`;
 
   inputField.value = '';
   inputTurno.value = 'A';
