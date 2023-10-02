@@ -269,7 +269,27 @@ class BluetoothTerminal {
     }).
     then((device) => {
         this._log('Dispositivo Bluetooth ' + device.name + ' seleccionado');
-  
+
+        ////////filtro rssi/////////
+        // device.watchAdvertisements();
+        // device.addEventListener('advertisementreceived', interpretIBeacon);
+        // function interpretIBeacon(event) {
+        //   var rssi = event.rssi;
+        // console.log(rssi)
+        // }
+
+      //   device.addEventListener('advertisementreceived', event => {
+      //     const rssi = event.rssi;
+      //     console.log('Valor RSSI:', rssi);
+
+      //     // Aquí puedes decidir si deseas mantener la conexión o desconectar en función del valor RSSI.
+      //     if (rssi < -70) {
+      //         console.log('Desconectando debido a un bajo RSSI...');
+      //         device.gatt.disconnect();
+      //     }
+      // });
+
+       ////////filtro rssi/////////
         this._device = device; // Remember device.
         this._device.addEventListener('gattserverdisconnected',
           this._boundHandleDisconnection);
