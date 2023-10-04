@@ -15,15 +15,162 @@ const inputLimpieza = document.querySelectorAll('input[name="limpieza"]');
 const inputInicioTurno = document.getElementById('inicio-turno');
 const inputFinTurno = document.getElementById('fin-turno');
 const inputNombreOperador = document.getElementById('nombre-operador');
+//html
+const formContainer = document.getElementById("form-container");
+const showFormButton = document.getElementById("show-form");
+const submitButton = document.getElementById("submit");
+const logoutButton = document.getElementById("logout-button");
+const closeFormButton = document.getElementById("close-form");
+const userBox = document.getElementById("user-box");
+const userName = document.getElementById("user-name");
+const timeCounter = document.getElementById("time-counter");
+const sessionTime = document.getElementById("session-time");
 
-
-
+const fallaContainer = document.getElementById("falla-container");
+const ingresarFallaButton = document.getElementById("ingresar-falla");
+const closeFallaButton = document.getElementById("close-falla");
+const fallaForm = document.getElementById("falla-form");
+const tipoFallaSelect = document.getElementById("tipo-falla");
+const descripcionFallaTextarea = document.getElementById("descripcion-falla");
 // Helpers.
 const defaultDeviceName = 'Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
 let isTerminalAutoScrolling = true;
 let retryInterval; // Variable para el temporizador de reintentos.
+//////////////script html 
 
+
+showFormButton.addEventListener("click", () => {
+  if (formContainer.style.display === "none" || formContainer.style.display === "") {
+      formContainer.style.display = "block";
+      showFormButton.textContent = "Ocultar formulario";
+      // Ocultar el "Cuadro principal"
+      document.querySelector(".connection-box").style.display = "none";
+  } else {
+      formContainer.style.display = "none";
+      showFormButton.textContent = "Realizar formulario";
+      // Mostrar el "Cuadro principal"
+      document.querySelector(".connection-box").style.display = "block";
+  }
+});
+
+// JavaScript para ocultar el formulario al enviarlo
+submitButton.addEventListener("click", () => {
+  formContainer.style.display = "none";
+  showFormButton.textContent = "Realizar formulario";
+  // Mostrar el "Cuadro principal" después de enviar el formulario
+  document.querySelector(".connection-box").style.display = "block";
+});
+
+
+closeFormButton.addEventListener("click", () => {
+  formContainer.style.display = "none";
+  showFormButton.textContent = "Realizar formulario";
+  // Mostrar el "Cuadro principal"
+  document.querySelector(".connection-box").style.display = "block";
+});
+// JavaScript para actualizar el nombre de usuario y contadores de tiempo
+
+
+// Nombre de usuario (reemplaza "Nombre de usuario" con el nombre real)
+const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+userName.textContent = username; // Actualiza el nombre de usuario
+
+// Variables para rastrear el tiempo de sesión y la hora actual
+let segundosTranscurridos = 0;
+
+// Función para actualizar los contadores de tiempo
+function updateTimers() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  timeCounter.textContent = `Hora Actual: ${hours}:${minutes}:${seconds}`;
+  
+  // Actualiza el tiempo de sesión en HH:mm:ss
+  const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
+  const minutosSesion = String(Math.floor((segundosTranscurridos % 3600) / 60)).padStart(2, "0");
+  const segundosSesion = String(segundosTranscurridos % 60).padStart(2, "0");
+  sessionTime.textContent = `Tiempo de Sesion: ${horasSesion}:${minutosSesion}:${segundosSesion}`;
+  
+  segundosTranscurridos++;
+}
+
+// Actualiza los contadores de tiempo cada segundo
+setInterval(updateTimers, 1000);
+
+// Agregar el manejo del clic en el botón "Cerrar Sesión"
+
+
+logoutButton.addEventListener("click", () => {
+// Obtener el tiempo de sesión actual en formato HH:mm:ss
+const tiempoSesion = sessionTime.textContent;
+
+// Crear el objeto de datos para enviar, incluyendo el nombre de usuario y el tiempo de sesión
+const dataToSend = {
+Usuario: username,
+statussesion: 'desconected',
+TiempoSesion: tiempoSesion
+};
+
+// Convertir el objeto de datos a formato JSON
+const jsonData = JSON.stringify(dataToSend);
+
+// Enviar los datos
+terminal.send(jsonData);
+
+// Eliminar el nombre de usuario de localStorage
+localStorage.removeItem('username');
+
+// Agregar un retraso de 1 segundo antes de redirigir a la página "index.html"
+setTimeout(() => {
+window.location.href = 'index.html';
+}, 1000); // 1000 milisegundos = 1 segundo
+});
+
+// Obtén referencias a los elementos del formulario de falla
+
+
+// Agrega un event listener para mostrar el formulario de falla cuando se hace clic en el botón "Ingresar Falla"
+ingresarFallaButton.addEventListener("click", () => {
+fallaContainer.style.display = "block";
+});
+
+// Agrega un event listener para ocultar el formulario de falla cuando se hace clic en el botón "Cerrar"
+closeFallaButton.addEventListener("click", () => {
+fallaContainer.style.display = "none";
+});
+
+// Agrega un event listener para enviar el formulario de falla cuando se hace clic en el botón "Enviar falla"
+fallaForm.addEventListener("submit", (event) => {
+event.preventDefault();
+
+// Obtiene los valores del formulario
+const tipoFalla = tipoFallaSelect.value;
+const descripcionFalla = descripcionFallaTextarea.value;
+
+// Crea un objeto con los datos de la falla
+const fallaData = {
+TipoFalla: tipoFalla,
+DescripcionFalla: descripcionFalla
+};
+
+// Convierte el objeto a formato JSON
+const fallaJsonData = JSON.stringify(fallaData);
+terminal.send(fallaJsonData);
+showLoadingModal();
+// Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+sendWithRetry(fallaJsonData);
+console.log("Falla enviada:", fallaJsonData);
+
+// Opcional: limpia el formulario después de enviar la falla
+tipoFallaSelect.value = "mecanica"; // Restaura el valor predeterminado
+descripcionFallaTextarea.value = ""; // Limpia el campo de descripción
+
+// Opcional: oculta el formulario después de enviar la falla
+fallaContainer.style.display = "none";
+});
+////////////////////////////////////
 const scrollElement = (element) => {
   const scrollTop = element.scrollHeight - element.offsetHeight;
   if (scrollTop > 0) {

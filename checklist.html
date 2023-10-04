@@ -51,12 +51,12 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 20px;
+            /* font-size: 20px;
             background-color: red;
             color: white;
             border: none;
             border-radius: 50%;
-            cursor: pointer;
+            cursor: pointer; */
         }
         .send-form {
             display: flex;
@@ -228,6 +228,7 @@
         <div class="content">
             <div class="form-container" id="form-container">
                 <button id="close-form" aria-label="Cerrar formulario">X</button>
+                
                 <form id="send-form" class="send-form">
 
                     <label for="nombre-operador">Nombre operador:</label>
@@ -296,6 +297,28 @@
                 <!-- Agregar el botón "Cerrar Sesión" -->
                 <button id="logout-button">Cerrar Sesion</button>
             </div>
+
+            <!-- Botón "Ingresar Falla" -->
+<button id="ingresar-falla" type="button" aria-label="Ingresar falla" disabled>
+    <h4 style="color: red;">Ingresar Falla</h4>
+</button>
+
+<!-- Formulario para ingresar la falla -->
+<div class="form-container" id="falla-container">
+    <button id="close-falla" aria-label="Cerrar formulario">X</button>
+    <form id="falla-form" class="send-form">
+        <label for="tipo-falla">Tipo de Falla:</label>
+        <select id="tipo-falla" name="tipo-falla" aria-label="Tipo de falla">
+            <option value="mecanica">Falla Mecánica</option>
+            <option value="electrica">Falla Eléctrica</option>
+            <option value="hidraulica">Falla Hidráulica</option>
+        </select>
+        <label for="descripcion-falla">Descripción de la Falla:</label>
+        <textarea id="descripcion-falla" name="descripcion-falla" rows="4" cols="50" aria-label="Descripción de la falla"></textarea>
+        <button id="submit-falla" type="submit" aria-label="Enviar formulario">Enviar falla</button>
+    </form>
+</div>
+
         </div>
     </div>
 
@@ -324,100 +347,11 @@
       </script>
     <script>
         // JavaScript para mostrar/ocultar el formulario al hacer clic en "Check List"
-        const formContainer = document.getElementById("form-container");
-        const showFormButton = document.getElementById("show-form");
-        const submitButton = document.getElementById("submit");
+        // const formContainer = document.getElementById("form-container");
+        // const showFormButton = document.getElementById("show-form");
+        // const submitButton = document.getElementById("submit");
 
-        showFormButton.addEventListener("click", () => {
-            if (formContainer.style.display === "none" || formContainer.style.display === "") {
-                formContainer.style.display = "block";
-                showFormButton.textContent = "Ocultar formulario";
-                // Ocultar el "Cuadro principal"
-                document.querySelector(".connection-box").style.display = "none";
-            } else {
-                formContainer.style.display = "none";
-                showFormButton.textContent = "Realizar formulario";
-                // Mostrar el "Cuadro principal"
-                document.querySelector(".connection-box").style.display = "block";
-            }
-        });
-
-        // JavaScript para ocultar el formulario al enviarlo
-        submitButton.addEventListener("click", () => {
-            formContainer.style.display = "none";
-            showFormButton.textContent = "Realizar formulario";
-            // Mostrar el "Cuadro principal" después de enviar el formulario
-            document.querySelector(".connection-box").style.display = "block";
-        });
-        const closeFormButton = document.getElementById("close-form");
-
-        closeFormButton.addEventListener("click", () => {
-            formContainer.style.display = "none";
-            showFormButton.textContent = "Realizar formulario";
-            // Mostrar el "Cuadro principal"
-            document.querySelector(".connection-box").style.display = "block";
-        });
-        // JavaScript para actualizar el nombre de usuario y contadores de tiempo
-        const userBox = document.getElementById("user-box");
-        const userName = document.getElementById("user-name");
-        const timeCounter = document.getElementById("time-counter");
-        const sessionTime = document.getElementById("session-time");
-
-        // Nombre de usuario (reemplaza "Nombre de usuario" con el nombre real)
-        const username = localStorage.getItem('username') || 'Usuario Predeterminado';
-        userName.textContent = username; // Actualiza el nombre de usuario
-
-        // Variables para rastrear el tiempo de sesión y la hora actual
-        let segundosTranscurridos = 0;
-
-        // Función para actualizar los contadores de tiempo
-        function updateTimers() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, "0");
-            const minutes = String(now.getMinutes()).padStart(2, "0");
-            const seconds = String(now.getSeconds()).padStart(2, "0");
-            timeCounter.textContent = `Hora Actual: ${hours}:${minutes}:${seconds}`;
-            
-            // Actualiza el tiempo de sesión en HH:mm:ss
-            const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
-            const minutosSesion = String(Math.floor((segundosTranscurridos % 3600) / 60)).padStart(2, "0");
-            const segundosSesion = String(segundosTranscurridos % 60).padStart(2, "0");
-            sessionTime.textContent = `Tiempo de Sesion: ${horasSesion}:${minutosSesion}:${segundosSesion}`;
-            
-            segundosTranscurridos++;
-        }
-
-        // Actualiza los contadores de tiempo cada segundo
-        setInterval(updateTimers, 1000);
-
-        // Agregar el manejo del clic en el botón "Cerrar Sesión"
-        const logoutButton = document.getElementById("logout-button");
-
-logoutButton.addEventListener("click", () => {
-    // Obtener el tiempo de sesión actual en formato HH:mm:ss
-    const tiempoSesion = sessionTime.textContent;
-    
-    // Crear el objeto de datos para enviar, incluyendo el nombre de usuario y el tiempo de sesión
-    const dataToSend = {
-        Usuario: username,
-        statussesion: 'desconected',
-        TiempoSesion: tiempoSesion
-    };
-
-    // Convertir el objeto de datos a formato JSON
-    const jsonData = JSON.stringify(dataToSend);
-
-    // Enviar los datos
-    terminal.send(jsonData);
-
-    // Eliminar el nombre de usuario de localStorage
-    localStorage.removeItem('username');
-
-    // Agregar un retraso de 1 segundo antes de redirigir a la página "index.html"
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 1000); // 1000 milisegundos = 1 segundo
-});
+        
 
     </script>
 </body>
