@@ -258,7 +258,7 @@ class BluetoothTerminal {
    * @private
    */
   _requestBluetoothDevice() {
-    this._log('Solicitando conexión a dispositivo Bluetooth...');
+    this._log('Solicitando conexion a dispositivo Bluetooth...');
   
     return navigator.bluetooth.requestDevice({
         filters: [{ name: 'ESP32-CE5DFE32EDC2' }],

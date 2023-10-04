@@ -46,11 +46,14 @@ showFormButton.addEventListener("click", () => {
       showFormButton.textContent = "Ocultar formulario";
       // Ocultar el "Cuadro principal"
       document.querySelector(".connection-box").style.display = "none";
+      ingresarFallaButton.style.display = "none";
+
   } else {
       formContainer.style.display = "none";
       showFormButton.textContent = "Realizar formulario";
       // Mostrar el "Cuadro principal"
       document.querySelector(".connection-box").style.display = "block";
+      ingresarFallaButton.style.display = "block";
   }
 });
 
@@ -60,6 +63,7 @@ submitButton.addEventListener("click", () => {
   showFormButton.textContent = "Realizar formulario";
   // Mostrar el "Cuadro principal" después de enviar el formulario
   document.querySelector(".connection-box").style.display = "block";
+  ingresarFallaButton.style.display = "block";
 });
 
 
@@ -68,6 +72,7 @@ closeFormButton.addEventListener("click", () => {
   showFormButton.textContent = "Realizar formulario";
   // Mostrar el "Cuadro principal"
   document.querySelector(".connection-box").style.display = "block";
+  ingresarFallaButton.style.display = "block";
 });
 // JavaScript para actualizar el nombre de usuario y contadores de tiempo
 
@@ -134,11 +139,15 @@ window.location.href = 'index.html';
 // Agrega un event listener para mostrar el formulario de falla cuando se hace clic en el botón "Ingresar Falla"
 ingresarFallaButton.addEventListener("click", () => {
 fallaContainer.style.display = "block";
+document.querySelector(".connection-box").style.display = "none";
+ingresarFallaButton.style.display = "none";
 });
 
 // Agrega un event listener para ocultar el formulario de falla cuando se hace clic en el botón "Cerrar"
 closeFallaButton.addEventListener("click", () => {
 fallaContainer.style.display = "none";
+document.querySelector(".connection-box").style.display = "block";
+ingresarFallaButton.style.display = "block";
 });
 
 // Agrega un event listener para enviar el formulario de falla cuando se hace clic en el botón "Enviar falla"
@@ -157,7 +166,7 @@ DescripcionFalla: descripcionFalla
 
 // Convierte el objeto a formato JSON
 const fallaJsonData = JSON.stringify(fallaData);
-terminal.send(fallaJsonData);
+// terminal.send(fallaJsonData);
 showLoadingModal();
 // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
 sendWithRetry(fallaJsonData);
@@ -169,6 +178,9 @@ descripcionFallaTextarea.value = ""; // Limpia el campo de descripción
 
 // Opcional: oculta el formulario después de enviar la falla
 fallaContainer.style.display = "none";
+document.querySelector(".connection-box").style.display = "block";
+ingresarFallaButton.style.display = "block";
+
 });
 ////////////////////////////////////
 const scrollElement = (element) => {
@@ -310,8 +322,9 @@ sendForm.addEventListener('submit', (e) => {
   Kilometraje: ${kilometraje}, Limpieza: ${limpieza},
   Inicio de turno: ${inicioTurno},Fin de turno: ${finTurno}`;
 
+  inputNombreOperador.value= '';
   inputField.value = '';
-  inputTurno.value = 'A';
+  inputTurno.value = '';
   inputCombustible.value = '';
   inputKilometraje.value = '';
   inputLimpieza.forEach((radio) => {

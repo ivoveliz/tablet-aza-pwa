@@ -30,6 +30,30 @@
             display: flex;
             align-items: flex-start;
         }
+     
+       /* Estilos para el botón "Ingresar Falla" */
+            .round-button {
+                border-radius: 50%; /* Hace que el botón sea redondo */
+                width: 100px; /* Ajusta el tamaño del botón según tus necesidades */
+                height: 100px; /* Ajusta el tamaño del botón según tus necesidades */
+                background-color: red; /* Color de fondo del botón */
+                position: absolute; /* Permite posicionar el botón de forma absoluta */
+                bottom: 300px; /* Ajusta la distancia desde la parte inferior del contenedor */
+                right: 20px; /* Ajusta la distancia desde el lado derecho del contenedor */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                border: none;
+                color: white;
+                font-size: 16px;
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75); /* Sombra para resaltar el botón */
+            }
+
+            .round-button:hover {
+                background-color: darkred; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+            }
+
 
         /* Estilos para el formulario */
         .form-container {
@@ -48,6 +72,18 @@
         }
 
         .form-container #close-form {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            /* font-size: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer; */
+        }
+
+        .form-container #close-falla {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -299,21 +335,23 @@
             </div>
 
             <!-- Botón "Ingresar Falla" -->
-<button id="ingresar-falla" type="button" aria-label="Ingresar falla" disabled>
-    <h4 style="color: red;">Ingresar Falla</h4>
-</button>
+            <button id="ingresar-falla" class="round-button" type="button" aria-label="Ingresar falla" disabled>
+                <h4 style="color: rgb(255, 255, 255);">Ingresar Falla</h4>
+            </button>
 
 <!-- Formulario para ingresar la falla -->
 <div class="form-container" id="falla-container">
     <button id="close-falla" aria-label="Cerrar formulario">X</button>
+    
     <form id="falla-form" class="send-form">
+
         <label for="tipo-falla">Tipo de Falla:</label>
         <select id="tipo-falla" name="tipo-falla" aria-label="Tipo de falla">
-            <option value="mecanica">Falla Mecánica</option>
-            <option value="electrica">Falla Eléctrica</option>
-            <option value="hidraulica">Falla Hidráulica</option>
+            <option value="mecanica">Falla Mecanica</option>
+            <option value="electrica">Falla Electrica</option>
+            <option value="hidraulica">Falla Hidraulica</option>
         </select>
-        <label for="descripcion-falla">Descripción de la Falla:</label>
+        <label for="descripcion-falla">Descripcion de la Falla:</label>
         <textarea id="descripcion-falla" name="descripcion-falla" rows="4" cols="50" aria-label="Descripción de la falla"></textarea>
         <button id="submit-falla" type="submit" aria-label="Enviar formulario">Enviar falla</button>
     </form>
