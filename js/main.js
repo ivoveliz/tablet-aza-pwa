@@ -29,7 +29,7 @@ const sessionTime = document.getElementById("session-time");
 // const fallaContainer = document.getElementById("falla-container");
 const ingresarFallaButtonMecanica = document.getElementById("ingresar-falla-mecanica");
 const ingresarFallaButtonElectrica = document.getElementById("ingresar-falla-electrica");
-const ingresarFallaButtonHidraulica = document.getElementById("ingresar-falla-hidraulica");
+const ingresarFallaButtonDesconocida = document.getElementById("ingresar-falla-desconocida");
 // const closeFallaButton = document.getElementById("close-falla");
 // const fallaForm = document.getElementById("falla-form");
 // const tipoFallaSelect = document.getElementById("tipo-falla");
@@ -50,7 +50,7 @@ showFormButton.addEventListener("click", () => {
       document.querySelector(".connection-box").style.display = "none";
       ingresarFallaButtonMecanica.style.display = "none";
       ingresarFallaButtonElectrica.style.display = "none";
-      ingresarFallaButtonHidraulica.style.display = "none";
+      ingresarFallaButtonDesconocida.style.display = "none";
 
   } else {
       formContainer.style.display = "none";
@@ -59,7 +59,7 @@ showFormButton.addEventListener("click", () => {
       document.querySelector(".connection-box").style.display = "block";
       ingresarFallaButtonMecanica.style.display = "block";
       ingresarFallaButtonElectrica.style.display = "block";
-      ingresarFallaButtonHidraulica.style.display = "block";
+      ingresarFallaButtonDesconocida.style.display = "block";
   }
 });
 
@@ -71,7 +71,7 @@ submitButton.addEventListener("click", () => {
   document.querySelector(".connection-box").style.display = "block";
   ingresarFallaButtonMecanica.style.display = "block";
   ingresarFallaButtonElectrica.style.display = "block";
-  ingresarFallaButtonHidraulica.style.display = "block";
+  ingresarFallaButtonDesconocida.style.display = "block";
 });
 
 
@@ -82,7 +82,7 @@ closeFormButton.addEventListener("click", () => {
   document.querySelector(".connection-box").style.display = "block";
   ingresarFallaButtonMecanica.style.display = "block";
   ingresarFallaButtonElectrica.style.display = "block";
-  ingresarFallaButtonHidraulica.style.display = "block";
+  ingresarFallaButtonDesconocida.style.display = "block";
 });
 // JavaScript para actualizar el nombre de usuario y contadores de tiempo
 
@@ -191,14 +191,14 @@ ingresarFallaButtonElectrica.addEventListener("click", () => {
     
     });
 
-ingresarFallaButtonHidraulica.addEventListener("click", () => {
+ingresarFallaButtonDesconocida.addEventListener("click", () => {
       event.preventDefault();
     
     
     
     // Crea un objeto con los datos de la falla
     const fallaData = {
-    TipoFalla: "hidraulica"
+    TipoFalla: "desconocida"
     };
     
     // Convierte el objeto a formato JSON

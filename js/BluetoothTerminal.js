@@ -362,7 +362,7 @@ class BluetoothTerminal {
           showFormButton.removeAttribute('disabled');
           ingresarFallaButtonMecanica.removeAttribute('disabled');
           ingresarFallaButtonElectrica.removeAttribute('disabled');
-          ingresarFallaButtonHidraulica.removeAttribute('disabled');
+          ingresarFallaButtonDesconocida.removeAttribute('disabled');
           characteristic.addEventListener('characteristicvaluechanged',
               this._boundHandleCharacteristicValueChanged);
         });
