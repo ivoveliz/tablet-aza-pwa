@@ -26,12 +26,14 @@ const userName = document.getElementById("user-name");
 const timeCounter = document.getElementById("time-counter");
 const sessionTime = document.getElementById("session-time");
 
-const fallaContainer = document.getElementById("falla-container");
-const ingresarFallaButton = document.getElementById("ingresar-falla");
-const closeFallaButton = document.getElementById("close-falla");
-const fallaForm = document.getElementById("falla-form");
-const tipoFallaSelect = document.getElementById("tipo-falla");
-const descripcionFallaTextarea = document.getElementById("descripcion-falla");
+// const fallaContainer = document.getElementById("falla-container");
+const ingresarFallaButtonMecanica = document.getElementById("ingresar-falla-mecanica");
+const ingresarFallaButtonElectrica = document.getElementById("ingresar-falla-electrica");
+const ingresarFallaButtonHidraulica = document.getElementById("ingresar-falla-hidraulica");
+// const closeFallaButton = document.getElementById("close-falla");
+// const fallaForm = document.getElementById("falla-form");
+// const tipoFallaSelect = document.getElementById("tipo-falla");
+// const descripcionFallaTextarea = document.getElementById("descripcion-falla");
 // Helpers.
 const defaultDeviceName = 'Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
@@ -46,14 +48,18 @@ showFormButton.addEventListener("click", () => {
       showFormButton.textContent = "Ocultar formulario";
       // Ocultar el "Cuadro principal"
       document.querySelector(".connection-box").style.display = "none";
-      ingresarFallaButton.style.display = "none";
+      ingresarFallaButtonMecanica.style.display = "none";
+      ingresarFallaButtonElectrica.style.display = "none";
+      ingresarFallaButtonHidraulica.style.display = "none";
 
   } else {
       formContainer.style.display = "none";
       showFormButton.textContent = "Realizar formulario";
       // Mostrar el "Cuadro principal"
       document.querySelector(".connection-box").style.display = "block";
-      ingresarFallaButton.style.display = "block";
+      ingresarFallaButtonMecanica.style.display = "block";
+      ingresarFallaButtonElectrica.style.display = "block";
+      ingresarFallaButtonHidraulica.style.display = "block";
   }
 });
 
@@ -63,7 +69,9 @@ submitButton.addEventListener("click", () => {
   showFormButton.textContent = "Realizar formulario";
   // Mostrar el "Cuadro principal" después de enviar el formulario
   document.querySelector(".connection-box").style.display = "block";
-  ingresarFallaButton.style.display = "block";
+  ingresarFallaButtonMecanica.style.display = "block";
+  ingresarFallaButtonElectrica.style.display = "block";
+  ingresarFallaButtonHidraulica.style.display = "block";
 });
 
 
@@ -72,7 +80,9 @@ closeFormButton.addEventListener("click", () => {
   showFormButton.textContent = "Realizar formulario";
   // Mostrar el "Cuadro principal"
   document.querySelector(".connection-box").style.display = "block";
-  ingresarFallaButton.style.display = "block";
+  ingresarFallaButtonMecanica.style.display = "block";
+  ingresarFallaButtonElectrica.style.display = "block";
+  ingresarFallaButtonHidraulica.style.display = "block";
 });
 // JavaScript para actualizar el nombre de usuario y contadores de tiempo
 
@@ -137,31 +147,20 @@ window.location.href = 'index.html';
 
 
 // Agrega un event listener para mostrar el formulario de falla cuando se hace clic en el botón "Ingresar Falla"
-ingresarFallaButton.addEventListener("click", () => {
-fallaContainer.style.display = "block";
-document.querySelector(".connection-box").style.display = "none";
-ingresarFallaButton.style.display = "none";
-});
+// ingresarFallaButton.addEventListener("click", () => {
+// fallaContainer.style.display = "block";
+// document.querySelector(".connection-box").style.display = "none";
+// ingresarFallaButton.style.display = "none";
+// });
 
-// Agrega un event listener para ocultar el formulario de falla cuando se hace clic en el botón "Cerrar"
-closeFallaButton.addEventListener("click", () => {
-fallaContainer.style.display = "none";
-document.querySelector(".connection-box").style.display = "block";
-ingresarFallaButton.style.display = "block";
-});
+ingresarFallaButtonMecanica.addEventListener("click", () => {
+  event.preventDefault();
 
-// Agrega un event listener para enviar el formulario de falla cuando se hace clic en el botón "Enviar falla"
-fallaForm.addEventListener("submit", (event) => {
-event.preventDefault();
 
-// Obtiene los valores del formulario
-const tipoFalla = tipoFallaSelect.value;
-const descripcionFalla = descripcionFallaTextarea.value;
 
 // Crea un objeto con los datos de la falla
 const fallaData = {
-TipoFalla: tipoFalla,
-DescripcionFalla: descripcionFalla
+TipoFalla: "mecanica"
 };
 
 // Convierte el objeto a formato JSON
@@ -171,17 +170,86 @@ showLoadingModal();
 // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
 sendWithRetry(fallaJsonData);
 console.log("Falla enviada:", fallaJsonData);
+  
+  });
+ingresarFallaButtonElectrica.addEventListener("click", () => {
+    event.preventDefault();
+  
+  
+  // Crea un objeto con los datos de la falla
+  const fallaData = {
+  TipoFalla: "electrica"
+  };
+  
+  // Convierte el objeto a formato JSON
+  const fallaJsonData = JSON.stringify(fallaData);
+  // terminal.send(fallaJsonData);
+  showLoadingModal();
+  // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+  sendWithRetry(fallaJsonData);
+  console.log("Falla enviada:", fallaJsonData);
+    
+    });
 
-// Opcional: limpia el formulario después de enviar la falla
-tipoFallaSelect.value = "mecanica"; // Restaura el valor predeterminado
-descripcionFallaTextarea.value = ""; // Limpia el campo de descripción
+ingresarFallaButtonHidraulica.addEventListener("click", () => {
+      event.preventDefault();
+    
+    
+    
+    // Crea un objeto con los datos de la falla
+    const fallaData = {
+    TipoFalla: "hidraulica"
+    };
+    
+    // Convierte el objeto a formato JSON
+    const fallaJsonData = JSON.stringify(fallaData);
+    // terminal.send(fallaJsonData);
+    showLoadingModal();
+    // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+    sendWithRetry(fallaJsonData);
+    console.log("Falla enviada:", fallaJsonData);
+      
+      });
 
-// Opcional: oculta el formulario después de enviar la falla
-fallaContainer.style.display = "none";
-document.querySelector(".connection-box").style.display = "block";
-ingresarFallaButton.style.display = "block";
+// Agrega un event listener para ocultar el formulario de falla cuando se hace clic en el botón "Cerrar"
+// closeFallaButton.addEventListener("click", () => {
+// fallaContainer.style.display = "none";
+// document.querySelector(".connection-box").style.display = "block";
+// ingresarFallaButton.style.display = "block";
+// });
 
-});
+// Agrega un event listener para enviar el formulario de falla cuando se hace clic en el botón "Enviar falla"
+// fallaForm.addEventListener("submit", (event) => {
+// event.preventDefault();
+
+// // Obtiene los valores del formulario
+// const tipoFalla = tipoFallaSelect.value;
+// const descripcionFalla = descripcionFallaTextarea.value;
+
+// // Crea un objeto con los datos de la falla
+// const fallaData = {
+// TipoFalla: tipoFalla,
+// DescripcionFalla: descripcionFalla
+// };
+
+// // Convierte el objeto a formato JSON
+// const fallaJsonData = JSON.stringify(fallaData);
+// // terminal.send(fallaJsonData);
+// showLoadingModal();
+// // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+// sendWithRetry(fallaJsonData);
+// console.log("Falla enviada:", fallaJsonData);
+
+// // Opcional: limpia el formulario después de enviar la falla
+// tipoFallaSelect.value = "mecanica"; // Restaura el valor predeterminado
+// descripcionFallaTextarea.value = ""; // Limpia el campo de descripción
+
+// // Opcional: oculta el formulario después de enviar la falla
+// fallaContainer.style.display = "none";
+// document.querySelector(".connection-box").style.display = "block";
+// ingresarFallaButton.style.display = "block";
+
+// });
 ////////////////////////////////////
 const scrollElement = (element) => {
   const scrollTop = element.scrollHeight - element.offsetHeight;

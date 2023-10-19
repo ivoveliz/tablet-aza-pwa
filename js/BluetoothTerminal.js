@@ -360,7 +360,9 @@ class BluetoothTerminal {
           this._log('Canal de mensajeria iniciado');
           this._log('Dispositivo bluetooth en linea..');
           showFormButton.removeAttribute('disabled');
-          ingresarFallaButton.removeAttribute('disabled');
+          ingresarFallaButtonMecanica.removeAttribute('disabled');
+          ingresarFallaButtonElectrica.removeAttribute('disabled');
+          ingresarFallaButtonHidraulica.removeAttribute('disabled');
           characteristic.addEventListener('characteristicvaluechanged',
               this._boundHandleCharacteristicValueChanged);
         });

@@ -31,14 +31,14 @@
             align-items: flex-start;
         }
      
-       /* Estilos para el botón "Ingresar Falla" */
-            .round-button {
+       /* Estilos para el botón "Ingresar Falla mecanica" */
+            .round-button-falla-mecanica {
                 border-radius: 50%; /* Hace que el botón sea redondo */
                 width: 100px; /* Ajusta el tamaño del botón según tus necesidades */
                 height: 100px; /* Ajusta el tamaño del botón según tus necesidades */
                 background-color: red; /* Color de fondo del botón */
                 position: absolute; /* Permite posicionar el botón de forma absoluta */
-                bottom: 300px; /* Ajusta la distancia desde la parte inferior del contenedor */
+                bottom: 325px; /* Ajusta la distancia desde la parte inferior del contenedor */
                 right: 20px; /* Ajusta la distancia desde el lado derecho del contenedor */
                 display: flex;
                 justify-content: center;
@@ -50,11 +50,64 @@
                 box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75); /* Sombra para resaltar el botón */
             }
 
-            .round-button:hover {
+            .round-button-falla-mecanica:hover {
                 background-color: darkred; /* Cambia el color de fondo al pasar el mouse sobre el botón */
             }
+            .round-button-falla-mecanica:disabled {
+                background-color: #ccc;
+            }
 
+/* Estilos para el botón "Ingresar Falla electrica" */
+            .round-button-falla-electrica {
+                border-radius: 50%; /* Hace que el botón sea redondo */
+                width: 100px; /* Ajusta el tamaño del botón según tus necesidades */
+                height: 100px; /* Ajusta el tamaño del botón según tus necesidades */
+                background-color: red; /* Color de fondo del botón */
+                position: absolute; /* Permite posicionar el botón de forma absoluta */
+                bottom: 210px; /* Ajusta la distancia desde la parte inferior del contenedor */
+                right: 20px; /* Ajusta la distancia desde el lado derecho del contenedor */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                border: none;
+                color: white;
+                font-size: 16px;
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75); /* Sombra para resaltar el botón */
+            }
 
+            .round-button-falla-electrica:hover {
+                background-color: darkred; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+            }
+            .round-button-falla-electrica:disabled {
+                background-color: #ccc;
+            }
+/* Estilos para el botón "Ingresar Falla hidraulica" */
+                .round-button-falla-hidraulica {
+                border-radius: 50%; /* Hace que el botón sea redondo */
+                width: 100px; /* Ajusta el tamaño del botón según tus necesidades */
+                height: 100px; /* Ajusta el tamaño del botón según tus necesidades */
+                background-color: red; /* Color de fondo del botón */
+                position: absolute; /* Permite posicionar el botón de forma absoluta */
+                bottom: 100px; /* Ajusta la distancia desde la parte inferior del contenedor */
+                right: 20px; /* Ajusta la distancia desde el lado derecho del contenedor */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                border: none;
+                color: white;
+                font-size: 16px;
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75); /* Sombra para resaltar el botón */
+            }
+
+            .round-button-falla-hidraulica:hover {
+                background-color: darkred; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+            }
+            .round-button-falla-hidraulica:disabled {
+                background-color: #ccc;
+            }
+            
         /* Estilos para el formulario */
         .form-container {
             display: none; /* Ocultar el formulario inicialmente */
@@ -335,12 +388,21 @@
             </div>
 
             <!-- Botón "Ingresar Falla" -->
-            <button id="ingresar-falla" class="round-button" type="button" aria-label="Ingresar falla" disabled>
-                <h4 style="color: rgb(255, 255, 255);">Ingresar Falla</h4>
+            <button id="ingresar-falla-mecanica" class="round-button-falla-mecanica" type="button" aria-label="Ingresar falla" disabled>
+                <h4 style="color: rgb(255, 255, 255);">Reportar Falla mecanica</h4>
+            </button>
+
+                <!-- Botón "Ingresar Falla" -->
+                <button id="ingresar-falla-electrica" class="round-button-falla-electrica" type="button" aria-label="Ingresar falla" disabled>
+                    <h4 style="color: rgb(255, 255, 255);">Reportar Falla electrica</h4>
+                </button>
+                    <!-- Botón "Ingresar Falla" -->
+            <button id="ingresar-falla-hidraulica" class="round-button-falla-hidraulica" type="button" aria-label="Ingresar falla" disabled>
+                <h4 style="color: rgb(255, 255, 255);">Reportar Falla hidraulica</h4>
             </button>
 
 <!-- Formulario para ingresar la falla -->
-<div class="form-container" id="falla-container">
+<!-- <div class="form-container" id="falla-container">
     <button id="close-falla" aria-label="Cerrar formulario">X</button>
     
     <form id="falla-form" class="send-form">
@@ -355,7 +417,7 @@
         <textarea id="descripcion-falla" name="descripcion-falla" rows="4" cols="50" aria-label="Descripción de la falla"></textarea>
         <button id="submit-falla" type="submit" aria-label="Enviar formulario">Enviar falla</button>
     </form>
-</div>
+</div> -->
 
         </div>
     </div>

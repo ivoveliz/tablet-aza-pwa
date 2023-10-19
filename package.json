@@ -4,6 +4,7 @@
   "description": "Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices",
   "bin": "./cli.js",
   "scripts": {
+   
     "build": "npm run js:vendor && npm run styles:vendor && npm run styles",
     "js:vendor": "cpx \"node_modules/sw-toolbox/*.js\" js && cpx \"node_modules/bluetooth-terminal/src/*.js\" js",
     "lint": "eslint cli.js sw.js js/main.js",
