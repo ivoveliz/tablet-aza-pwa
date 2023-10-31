@@ -106,7 +106,7 @@ function updateTimers() {
   const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
   const minutosSesion = String(Math.floor((segundosTranscurridos % 3600) / 60)).padStart(2, "0");
   const segundosSesion = String(segundosTranscurridos % 60).padStart(2, "0");
-  sessionTime.textContent = `Tiempo de Sesion: ${horasSesion}:${minutosSesion}:${segundosSesion}`;
+  sessionTime.textContent = `${horasSesion}:${minutosSesion}:${segundosSesion}`;
   
   segundosTranscurridos++;
 }
@@ -516,8 +516,9 @@ sendForm.addEventListener('submit', (e) => {
   //   TimeSession:"",
   //   Typefail:""
   //   }
-  
+  let currentId = parseInt(localStorage.getItem('reportId')) || 1;
   const ReportData = {
+    Id:currentId,
     Turn: turno,
     UserId: username,
     DateTurn: new Date(inicioTurno).getTime(), // Convierte la fecha a timestamp
@@ -531,6 +532,10 @@ sendForm.addEventListener('submit', (e) => {
     TimeSession: "", // Dejamos la hora como string
     TypeFail: ""
 };
+
+currentId++;
+// Guarda el nuevo valor del ID en localStorage
+localStorage.setItem('reportId', currentId);
     const ReportDataJsonData = JSON.stringify(ReportData);
     // terminal.send(fallaJsonData);
     const crc32Value = crc32(ReportDataJsonData);
