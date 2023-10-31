@@ -122,25 +122,43 @@ logoutButton.addEventListener("click", () => {
 const tiempoSesion = sessionTime.textContent;
 
 // Crear el objeto de datos para enviar, incluyendo el nombre de usuario y el tiempo de sesión
-const dataToSend = {
-Usuario: username,
-statussesion: 'desconected',
-TiempoSesion: tiempoSesion
-};
+// const dataToSend = {
+// Usuario: username,
+// statussesion: 'desconected',
+// TiempoSesion: tiempoSesion
+// };
+
+const dataToSend ={
+Turn: null,
+UserId: username,
+DateTurn: null,
+Cleaning: null,
+kilometer: null,
+NameOperator: null,
+DateMaintenace: null,
+LevelOilPorcent: null,
+LevelFuelPorcent: null,
+Statussesion: "desconected",
+Timesesion:tiempoSesion,
+Typefail:null
+}
 
 // Convertir el objeto de datos a formato JSON
 const jsonData = JSON.stringify(dataToSend);
 
+const crc32Value = crc32(jsonData);
+const JsonSend= jsonData+crc32Value+"*"
 // Enviar los datos
-terminal.send(jsonData);
+terminal.send(JsonSend);
 
 // Eliminar el nombre de usuario de localStorage
 localStorage.removeItem('username');
 
+
 // Agregar un retraso de 1 segundo antes de redirigir a la página "index.html"
 setTimeout(() => {
 window.location.href = 'index.html';
-}, 1000); // 1000 milisegundos = 1 segundo
+}, 2000); // 1000 milisegundos = 1 segundo
 });
 
 // Obtén referencias a los elementos del formulario de falla
@@ -159,17 +177,33 @@ ingresarFallaButtonMecanica.addEventListener("click", () => {
 
 
 // Crea un objeto con los datos de la falla
-const fallaData = {
-TipoFalla: "mecanica"
-};
+// const fallaData = {
+// TipoFalla: "mecanica"
+// };
+const fallaData={
+  Turn: null,
+  UserId: null,
+  DateTurn: null,
+  Cleaning: null,
+  kilometer: null,
+  NameOperator: null,
+  DateMaintenace: null,
+  LevelOilPorcent: null,
+  LevelFuelPorcent: null,
+  Statussesion: null,
+  Timesesion:null,
+  Typefail:"mecanica"
+  }
 
 // Convierte el objeto a formato JSON
 const fallaJsonData = JSON.stringify(fallaData);
 // terminal.send(fallaJsonData);
+const crc32Value = crc32(fallaJsonData);
+const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*")
 showLoadingModal();
 // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
-sendWithRetry(fallaJsonData);
-console.log("Falla enviada:", fallaJsonData);
+sendWithRetry(fallaJsonSend);
+console.log("Falla enviada:", fallaJsonSend);
   
   });
 ingresarFallaButtonElectrica.addEventListener("click", () => {
@@ -177,17 +211,33 @@ ingresarFallaButtonElectrica.addEventListener("click", () => {
   
   
   // Crea un objeto con los datos de la falla
-  const fallaData = {
-  TipoFalla: "electrica"
-  };
+  // const fallaData = {
+  // TipoFalla: "electrica"
+  // };
+
+  const fallaData={
+    Turn: null,
+    UserId: null,
+    DateTurn: null,
+    Cleaning: null,
+    kilometer: null,
+    NameOperator: null,
+    DateMaintenace: null,
+    LevelOilPorcent: null,
+    LevelFuelPorcent: null,
+    Statussesion: null,
+    Timesesion:null,
+    Typefail:"electrica"
+    }
   
-  // Convierte el objeto a formato JSON
-  const fallaJsonData = JSON.stringify(fallaData);
-  // terminal.send(fallaJsonData);
-  showLoadingModal();
-  // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
-  sendWithRetry(fallaJsonData);
-  console.log("Falla enviada:", fallaJsonData);
+    const fallaJsonData = JSON.stringify(fallaData);
+    // terminal.send(fallaJsonData);
+    const crc32Value = crc32(fallaJsonData);
+    const fallaJsonSend= fallaJsonData+crc32Value+"*"
+    showLoadingModal();
+    // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+    sendWithRetry(fallaJsonSend);
+    console.log("Falla enviada:", fallaJsonSend);
     
     });
 
@@ -197,17 +247,32 @@ ingresarFallaButtonDesconocida.addEventListener("click", () => {
     
     
     // Crea un objeto con los datos de la falla
-    const fallaData = {
-    TipoFalla: "desconocida"
-    };
+    // const fallaData = {
+    // TipoFalla: "desconocida"
+    // };
+    const fallaData={
+      Turn: null,
+      UserId: null,
+      DateTurn: null,
+      Cleaning: null,
+      kilometer: null,
+      NameOperator: null,
+      DateMaintenace: null,
+      LevelOilPorcent: null,
+      LevelFuelPorcent: null,
+      Statussesion: null,
+      Timesesion:null,
+      Typefail:"desconocida"
+      }
     
-    // Convierte el objeto a formato JSON
-    const fallaJsonData = JSON.stringify(fallaData);
-    // terminal.send(fallaJsonData);
-    showLoadingModal();
-    // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
-    sendWithRetry(fallaJsonData);
-    console.log("Falla enviada:", fallaJsonData);
+      const fallaJsonData = JSON.stringify(fallaData);
+      // terminal.send(fallaJsonData);
+      const crc32Value = crc32(fallaJsonData);
+      const fallaJsonSend= fallaJsonData+crc32Value+"*"
+      showLoadingModal();
+      // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+      sendWithRetry(fallaJsonSend);
+      console.log("Falla enviada:", fallaJsonSend);
       
       });
 
@@ -390,6 +455,30 @@ sendForm.addEventListener('submit', (e) => {
   Kilometraje: ${kilometraje}, Limpieza: ${limpieza},
   Inicio de turno: ${inicioTurno},Fin de turno: ${finTurno}`;
 
+  const ReportData={
+    Turn: turno,
+    UserId: username,
+    DateTurn: inicioTurno,
+    Cleaning: limpieza,
+    kilometer: kilometraje,
+    NameOperator: operador,
+    DateMaintenace: finTurno,
+    LevelOilPorcent: valor,
+    LevelFuelPorcent: combustible,
+    Statussesion: null,
+    Timesesion:null,
+    Typefail:null
+    }
+  
+    const ReportDataJsonData = JSON.stringify(ReportData);
+    // terminal.send(fallaJsonData);
+    const crc32Value = crc32(ReportDataJsonData);
+    const ReportJsonSend= JSON.stringify(ReportDataJsonData+crc32Value+"*")
+    showLoadingModal();
+    // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
+    sendWithRetry(ReportJsonSend);
+    console.log("reprote enviado:", ReportJsonSend);
+
   inputNombreOperador.value= '';
   inputField.value = '';
   inputTurno.value = '';
@@ -404,7 +493,7 @@ sendForm.addEventListener('submit', (e) => {
   inputField.focus();
 
   // Intenta enviar el mensaje y configura reintentos.
-  sendWithRetry(dataToSend);
+  // sendWithRetry(dataToSend);
 });
 
 // Switch terminal auto-scrolling if it scrolls out of the bottom.
@@ -414,3 +503,24 @@ terminalContainer.addEventListener('scroll', () => {
 
   isTerminalAutoScrolling = (scrollTopOffset < terminalContainer.scrollTop);
 });
+
+
+function crc32(str) {
+  const table = [];
+  for (let i = 0; i < 256; i++) {
+      let c = i;
+      for (let j = 0; j < 8; j++) {
+          c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+      }
+      table[i] = c;
+  }
+
+  let crc = 0 ^ -1;
+  for (let i = 0; i < str.length; i++) {
+      crc = (crc >>> 8) ^ table[(crc ^ str.charCodeAt(i)) & 0xFF];
+  }
+
+  // Convierte el valor CRC32 a hexadecimal
+  const crc32Hex = (crc ^ -1) >>> 0; // Valor sin signo
+  return crc32Hex.toString(16).toUpperCase(); // Representación hexadecimal en mayúsculas
+}
