@@ -124,30 +124,33 @@ const tiempoSesion = sessionTime.textContent;
 // Crear el objeto de datos para enviar, incluyendo el nombre de usuario y el tiempo de sesión
 // const dataToSend = {
 // Usuario: username,
-// statussesion: 'desconected',
+// StatusSession: 'desconected',
 // TiempoSesion: tiempoSesion
 // };
-
+let currentId = parseInt(localStorage.getItem('reportId')) || 1;
 const dataToSend ={
-Turn: null,
+  Id:currentId,
+Turn: "",
 UserId: username,
-DateTurn: null,
-Cleaning: null,
-kilometer: null,
-NameOperator: null,
-DateMaintenace: null,
-LevelOilPorcent: null,
-LevelFuelPorcent: null,
-Statussesion: "desconected",
-Timesesion:tiempoSesion,
-Typefail:null
+DateTurn: "",
+Cleaning: "",
+Kilometer: "",
+NameOperator: "",
+DateMaintenace: "",
+LevelOil: "",
+LevelFuel: "",
+StatusSession: "disconnected",
+TimeSession:tiempoSesion,
+Typefail:""
 }
-
+currentId++;
+// Guarda el nuevo valor del ID en localStorage
+localStorage.setItem('reportId', currentId);
 // Convertir el objeto de datos a formato JSON
 const jsonData = JSON.stringify(dataToSend);
 
 const crc32Value = crc32(jsonData);
-const JsonSend= jsonData+crc32Value+"*"
+const JsonSend= JSON.stringify(jsonData+crc32Value+"*").replace(/\\/g, "");
 // Enviar los datos
 terminal.send(JsonSend);
 
@@ -180,26 +183,31 @@ ingresarFallaButtonMecanica.addEventListener("click", () => {
 // const fallaData = {
 // TipoFalla: "mecanica"
 // };
+const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+let currentId = parseInt(localStorage.getItem('reportId')) || 1;
 const fallaData={
-  Turn: null,
-  UserId: null,
-  DateTurn: null,
-  Cleaning: null,
-  kilometer: null,
-  NameOperator: null,
-  DateMaintenace: null,
-  LevelOilPorcent: null,
-  LevelFuelPorcent: null,
-  Statussesion: null,
-  Timesesion:null,
-  Typefail:"mecanica"
+  Id:currentId,
+  Turn: "",
+  UserId: username,
+  DateTurn: "",
+  Cleaning: "",
+  Kilometer: "",
+  NameOperator: "",
+  DateMaintenace: "",
+  LevelOil: "",
+  LevelFuel: "",
+  StatusSession: "",
+  TimeSession:"",
+  Typefail:"mechanic"
   }
-
+  currentId++;
+      // Guarda el nuevo valor del ID en localStorage
+      localStorage.setItem('reportId', currentId);
 // Convierte el objeto a formato JSON
 const fallaJsonData = JSON.stringify(fallaData);
 // terminal.send(fallaJsonData);
 const crc32Value = crc32(fallaJsonData);
-const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*")
+const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*").replace(/\\/g, "");
 showLoadingModal();
 // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
 sendWithRetry(fallaJsonSend);
@@ -214,26 +222,31 @@ ingresarFallaButtonElectrica.addEventListener("click", () => {
   // const fallaData = {
   // TipoFalla: "electrica"
   // };
+  const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+  let currentId = parseInt(localStorage.getItem('reportId')) || 1;
 
   const fallaData={
-    Turn: null,
-    UserId: null,
-    DateTurn: null,
-    Cleaning: null,
-    kilometer: null,
-    NameOperator: null,
-    DateMaintenace: null,
-    LevelOilPorcent: null,
-    LevelFuelPorcent: null,
-    Statussesion: null,
-    Timesesion:null,
-    Typefail:"electrica"
+    Id:currentId,
+    Turn: "",
+    UserId: username,
+    DateTurn: "",
+    Cleaning: "",
+    Kilometer: "",
+    NameOperator: "",
+    DateMaintenace: "",
+    LevelOil: "",
+    LevelFuel: "",
+    StatusSession: "",
+    TimeSession:"",
+    Typefail:"electric"
     }
-  
+    currentId++;
+      // Guarda el nuevo valor del ID en localStorage
+      localStorage.setItem('reportId', currentId);
     const fallaJsonData = JSON.stringify(fallaData);
     // terminal.send(fallaJsonData);
     const crc32Value = crc32(fallaJsonData);
-    const fallaJsonSend= fallaJsonData+crc32Value+"*"
+    const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*").replace(/\\/g, "");
     showLoadingModal();
     // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
     sendWithRetry(fallaJsonSend);
@@ -250,25 +263,31 @@ ingresarFallaButtonDesconocida.addEventListener("click", () => {
     // const fallaData = {
     // TipoFalla: "desconocida"
     // };
+    const username = localStorage.getItem('username') || 'Usuario Predeterminado';
+    let currentId = parseInt(localStorage.getItem('reportId')) || 1;
+
     const fallaData={
-      Turn: null,
-      UserId: null,
-      DateTurn: null,
-      Cleaning: null,
-      kilometer: null,
-      NameOperator: null,
-      DateMaintenace: null,
-      LevelOilPorcent: null,
-      LevelFuelPorcent: null,
-      Statussesion: null,
-      Timesesion:null,
-      Typefail:"desconocida"
+      Id:currentId,
+      Turn: "",
+      UserId: username,
+      DateTurn: "",
+      Cleaning: "",
+      Kilometer: "",
+      NameOperator: "",
+      DateMaintenace: "",
+      LevelOil: "",
+      LevelFuel: "",
+      StatusSession: "",
+      TimeSession:"",
+      Typefail:"unknown"
       }
-    
+      currentId++;
+      // Guarda el nuevo valor del ID en localStorage
+      localStorage.setItem('reportId', currentId);
       const fallaJsonData = JSON.stringify(fallaData);
       // terminal.send(fallaJsonData);
       const crc32Value = crc32(fallaJsonData);
-      const fallaJsonSend= fallaJsonData+crc32Value+"*"
+      const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*").replace(/\\/g, "");
       showLoadingModal();
       // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
       sendWithRetry(fallaJsonSend);
@@ -409,9 +428,37 @@ connectButton.addEventListener('click', () => {
   // Solicitar la conexión Bluetooth solo cuando el usuario hace clic en el botón de conexión.
   terminal.connect()
     .then(() => {
+
+      let currentId = parseInt(localStorage.getItem('reportId')) || 1;
+// Cuando se escribe un nuevo reporte, incrementa el ID
       const username = localStorage.getItem('username') || 'Usuario Predeterminado';
-      const dataToSend = `{Usuario: ${username},statussesion:conected}`
-      terminal.send(dataToSend)
+      // const dataToSend = `{Usuario: ${username},StatusSession:conected}`
+      const dataToSend ={
+        Id:currentId,
+        Turn: "",
+        UserId: username,
+        DateTurn: "",
+        Cleaning: "",
+        Kilometer: "",
+        NameOperator: "",
+        DateMaintenace: "",
+        LevelOil: "",
+        LevelFuel: "",
+        StatusSession: "connected",
+        TimeSession:"",
+        Typefail:""
+        }
+
+        currentId++;
+      // Guarda el nuevo valor del ID en localStorage
+      localStorage.setItem('reportId', currentId);
+        // Convertir el objeto de datos a formato JSON
+        const jsonData = JSON.stringify(dataToSend);
+        
+        const crc32Value = crc32(jsonData);
+        const JsonSend= JSON.stringify(jsonData+crc32Value+"*").replace(/\\/g, "");
+      terminal.send(JsonSend)
+      // terminal.send(dataToSend)
     console.log("conectado")
     
     // showFormButton.removeAttribute('disabled');
@@ -455,25 +502,40 @@ sendForm.addEventListener('submit', (e) => {
   Kilometraje: ${kilometraje}, Limpieza: ${limpieza},
   Inicio de turno: ${inicioTurno},Fin de turno: ${finTurno}`;
 
-  const ReportData={
+  // const ReportData={
+  //   Turn: turno,
+  //   UserId: username,
+  //   DateTurn: inicioTurno,
+  //   Cleaning: limpieza,
+  //   Kilometer: kilometraje,
+  //   NameOperator: operador,
+  //   DateMaintenace: finTurno,
+  //   LevelOil: valor,
+  //   LevelFuel: combustible,
+  //   StatusSession: "",
+  //   TimeSession:"",
+  //   Typefail:""
+  //   }
+  
+  const ReportData = {
     Turn: turno,
     UserId: username,
-    DateTurn: inicioTurno,
+    DateTurn: new Date(inicioTurno).getTime(), // Convierte la fecha a timestamp
     Cleaning: limpieza,
-    kilometer: kilometraje,
+    Kilometer: parseInt(kilometraje), // Convierte el kilometraje a número
     NameOperator: operador,
-    DateMaintenace: finTurno,
-    LevelOilPorcent: valor,
-    LevelFuelPorcent: combustible,
-    Statussesion: null,
-    Timesesion:null,
-    Typefail:null
-    }
-  
+    DateMaintenace: new Date(finTurno).getTime(), // Convierte la fecha a timestamp
+    LevelOil: parseInt(valor), // Convierte el valor del aceite a número
+    LevelFuel: parseInt(combustible), // Convierte el nivel de combustible a número
+    StatusSession: "",
+    TimeSession: "", // Dejamos la hora como string
+    TypeFail: ""
+};
     const ReportDataJsonData = JSON.stringify(ReportData);
     // terminal.send(fallaJsonData);
     const crc32Value = crc32(ReportDataJsonData);
-    const ReportJsonSend= JSON.stringify(ReportDataJsonData+crc32Value+"*")
+    // const ReportJsonSend= JSON.stringify(ReportDataJsonData+crc32Value+"*")
+    const ReportJsonSend = JSON.stringify(ReportDataJsonData + crc32Value + "*").replace(/\\/g, "");
     showLoadingModal();
     // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
     sendWithRetry(ReportJsonSend);
