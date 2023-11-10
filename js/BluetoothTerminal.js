@@ -451,41 +451,64 @@ class BluetoothTerminal {
   // }
   
   _handleCharacteristicValueChanged(event) {
-    const value = new TextDecoder().decode(event.target.value);
-  
+    const value = new TextDecoder().decode(event.target.value).trim();;
+    const crc32Control = localStorage.getItem('crc32Control').trim();
+    // console.log("mensaje desde esp",value)
     try {
       const jsonData = JSON.parse(value);
-  
-      if (jsonData.Newuser && jsonData.Newuser.username && jsonData.Newuser.password) {
-        // Cargar los datos actuales de users.json desde localStorage
-        const usersData = JSON.parse(localStorage.getItem('users.json')) || [];
-  
-        // Agregar el nuevo usuario al arreglo
-        usersData.push({
-          username: jsonData.Newuser.username,
-          password: jsonData.Newuser.password
-        });
-  
-        // Almacenar los datos actualizados de users.json en localStorage
-        localStorage.setItem('users.json', JSON.stringify(usersData));
-  
-        // Realizar cualquier acción adicional que necesites
-        this.receive('Nuevo usuario agregado: ' + jsonData.Newuser.username);
-
-        // Agregar un retraso de 2 segundos (2000 milisegundos)
-        setTimeout(() => {
-          this.receive('Dispositivo bluetooth en linea..');
-        }, 2000);
+     
+      if(jsonData){
+        console.log(jsonData.user)
+        if ( jsonData.user && jsonData.pass) {
+          // Cargar los datos actuales de users.json desde localStorage
+          const usersData = JSON.parse(localStorage.getItem('users.json')) || [];
+    
+          // Agregar el nuevo usuario al arreglo
+          usersData.push({
+            username: jsonData.user,
+            password: jsonData.pass
+          });
+    
+          // Almacenar los datos actualizados de users.json en localStorage
+          localStorage.setItem('users.json', JSON.stringify(usersData));
+    
+          // Realizar cualquier acción adicional que necesites
+          this.receive('Nuevo usuario agregado: ' + jsonData.user);
+          
         
-      } else if (jsonData.responseelectron && jsonData.responseelectron.status === "true" && jsonData.responseelectron.sendlora === "true") {
-        // Si es un "responseelectron" con status "true" y sendlora "true", mostrar por consola
-        this.receivestatus(true);
-      } else {
-        this.receivestatus(false);
+          // Agregar un retraso de 2 segundos (2000 milisegundos)
+          setTimeout(() => {
+            this.receive('Dispositivo bluetooth en linea..');
+          }, 4000);
+          
+        } 
+        //else if (jsonData.responseelectron && jsonData.responseelectron.status === "true" && jsonData.responseelectron.sendlora === "true") {
+        //   // Si es un "responseelectron" con status "true" y sendlora "true", mostrar por consola
+        //   this.receivestatus(true);
+        // } 
+
+      }
+    
+      else {
+      this.receivestatus(false);
+      this._log('Valor de respuesta no valido ..');
       }
     } catch (error) {
-      this.receive('Error al analizar el JSON: ' + error.message);
-      this._log('Dispositivo bluetooth en linea..');
+      // console.log("crclocalstorage",crc32Control)
+      // console.log("mensaje desde esp",value)
+      if(crc32Control === value ){
+
+        // console.log("crclocalstorage",crc32Control)
+        // console.log("mensaje desde esp",value)
+        this.receivestatus(true);
+      }
+      else {
+        this.receivestatus(false);
+        this._log('Valor de respuesta no valido ..');
+        }
+     
+        this._log('Error al analizar el JSON: ' + error.message);
+      this._log('Valor de respuesta no valido ..');
     }
   }
   

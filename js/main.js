@@ -89,6 +89,8 @@ closeFormButton.addEventListener("click", () => {
 
 
 // Nombre de usuario (reemplaza "Nombre de usuario" con el nombre real)
+
+
 const username = localStorage.getItem('username') || 'Usuario Predeterminado';
 userName.textContent = username; // Actualiza el nombre de usuario
 
@@ -210,6 +212,8 @@ const fallaData={
 const fallaJsonData = JSON.stringify(fallaData);
 // terminal.send(fallaJsonData);
 const crc32Value = crc32(fallaJsonData);
+const crc32Control=crc32Value+"*"
+localStorage.setItem('crc32Control', crc32Control);
 const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*").replace(/\\/g, "");
 showLoadingModal();
 // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
@@ -249,6 +253,8 @@ ingresarFallaButtonElectrica.addEventListener("click", () => {
     const fallaJsonData = JSON.stringify(fallaData);
     // terminal.send(fallaJsonData);
     const crc32Value = crc32(fallaJsonData);
+    const crc32Control=crc32Value+"*"
+    localStorage.setItem('crc32Control', crc32Control);
     const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*").replace(/\\/g, "");
     showLoadingModal();
     // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
@@ -290,6 +296,8 @@ ingresarFallaButtonDesconocida.addEventListener("click", () => {
       const fallaJsonData = JSON.stringify(fallaData);
       // terminal.send(fallaJsonData);
       const crc32Value = crc32(fallaJsonData);
+      const crc32Control=crc32Value+"*"
+      localStorage.setItem('crc32Control', crc32Control);
       const fallaJsonSend= JSON.stringify(fallaJsonData+crc32Value+"*").replace(/\\/g, "");
       showLoadingModal();
       // Simula el envío de datos (reemplázalo con tu lógica real de envío de datos)
@@ -459,6 +467,8 @@ connectButton.addEventListener('click', () => {
         const jsonData = JSON.stringify(dataToSend);
         
         const crc32Value = crc32(jsonData);
+        const crc32Control=crc32Value+"*"
+localStorage.setItem('crc32Control', crc32Control);
         const JsonSend= JSON.stringify(jsonData+crc32Value+"*").replace(/\\/g, "");
       terminal.send(JsonSend)
       // terminal.send(dataToSend)
@@ -542,6 +552,8 @@ localStorage.setItem('reportId', currentId);
     const ReportDataJsonData = JSON.stringify(ReportData);
     // terminal.send(fallaJsonData);
     const crc32Value = crc32(ReportDataJsonData);
+    const crc32Control=crc32Value+"*"
+localStorage.setItem('crc32Control', crc32Control);
     // const ReportJsonSend= JSON.stringify(ReportDataJsonData+crc32Value+"*")
     const ReportJsonSend = JSON.stringify(ReportDataJsonData + crc32Value + "*").replace(/\\/g, "");
     showLoadingModal();
