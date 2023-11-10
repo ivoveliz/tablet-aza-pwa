@@ -39,6 +39,7 @@ const defaultDeviceName = 'Terminal';
 const terminalAutoScrollingLimit = terminalContainer.offsetHeight / 2;
 let isTerminalAutoScrolling = true;
 let retryInterval; // Variable para el temporizador de reintentos.
+let segundosTranscurridos = 0;
 //////////////script html 
 
 
@@ -92,7 +93,7 @@ const username = localStorage.getItem('username') || 'Usuario Predeterminado';
 userName.textContent = username; // Actualiza el nombre de usuario
 
 // Variables para rastrear el tiempo de sesión y la hora actual
-let segundosTranscurridos = 0;
+
 
 // Función para actualizar los contadores de tiempo
 function updateTimers() {
@@ -106,7 +107,7 @@ function updateTimers() {
   const horasSesion = String(Math.floor(segundosTranscurridos / 3600)).padStart(2, "0");
   const minutosSesion = String(Math.floor((segundosTranscurridos % 3600) / 60)).padStart(2, "0");
   const segundosSesion = String(segundosTranscurridos % 60).padStart(2, "0");
-  sessionTime.textContent = `${horasSesion}:${minutosSesion}:${segundosSesion}`;
+  sessionTime.textContent = `Tiempo sesion:${horasSesion}:${minutosSesion}:${segundosSesion}`;
   
   segundosTranscurridos++;
 }
@@ -139,8 +140,8 @@ NameOperator: "",
 DateMaintenace: "",
 LevelOil: "",
 LevelFuel: "",
-StatusSession: "disconnected",
-TimeSession:tiempoSesion,
+StatusSession: 0,//discoected
+TimeSession:segundosTranscurridos,
 Typefail:""
 }
 currentId++;
@@ -150,6 +151,8 @@ localStorage.setItem('reportId', currentId);
 const jsonData = JSON.stringify(dataToSend);
 
 const crc32Value = crc32(jsonData);
+const crc32Control=crc32Value+"*"
+localStorage.setItem('crc32Control', crc32Control);
 const JsonSend= JSON.stringify(jsonData+crc32Value+"*").replace(/\\/g, "");
 // Enviar los datos
 terminal.send(JsonSend);
@@ -198,7 +201,7 @@ const fallaData={
   LevelFuel: "",
   StatusSession: "",
   TimeSession:"",
-  Typefail:"mechanic"
+  Typefail:0//mecanic = 0 
   }
   currentId++;
       // Guarda el nuevo valor del ID en localStorage
@@ -238,7 +241,7 @@ ingresarFallaButtonElectrica.addEventListener("click", () => {
     LevelFuel: "",
     StatusSession: "",
     TimeSession:"",
-    Typefail:"electric"
+    Typefail:1//electric=1
     }
     currentId++;
       // Guarda el nuevo valor del ID en localStorage
@@ -279,7 +282,7 @@ ingresarFallaButtonDesconocida.addEventListener("click", () => {
       LevelFuel: "",
       StatusSession: "",
       TimeSession:"",
-      Typefail:"unknown"
+      Typefail:2//"unknown"
       }
       currentId++;
       // Guarda el nuevo valor del ID en localStorage
@@ -444,7 +447,7 @@ connectButton.addEventListener('click', () => {
         DateMaintenace: "",
         LevelOil: "",
         LevelFuel: "",
-        StatusSession: "connected",
+        StatusSession: 1,//conected
         TimeSession:"",
         Typefail:""
         }
@@ -522,9 +525,9 @@ sendForm.addEventListener('submit', (e) => {
     Turn: turno,
     UserId: username,
     DateTurn: new Date(inicioTurno).getTime(), // Convierte la fecha a timestamp
-    Cleaning: limpieza,
+    Cleaning: parseInt(limpieza),
     Kilometer: parseInt(kilometraje), // Convierte el kilometraje a número
-    NameOperator: operador,
+    NameOperator: parseInt(operador),
     DateMaintenace: new Date(finTurno).getTime(), // Convierte la fecha a timestamp
     LevelOil: parseInt(valor), // Convierte el valor del aceite a número
     LevelFuel: parseInt(combustible), // Convierte el nivel de combustible a número
