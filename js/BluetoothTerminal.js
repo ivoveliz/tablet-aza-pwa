@@ -140,6 +140,14 @@ class BluetoothTerminal {
       // Handle incoming data.
     }
   /**
+   * 
+   * @param {string} DataDownlink - Data
+   */
+  DownlinkStatus(DataDownlink) {
+    console.log('downlink encviado', DataDownlink);
+    // Handle incoming data.
+  }
+/**
    * Data receiving handler which called whenever the new data comes from
    * the connected device, override it to handle incoming data.
    * @param {string} data - Data
@@ -474,7 +482,8 @@ class BluetoothTerminal {
     
           // Realizar cualquier acción adicional que necesites
           this.receive('Nuevo usuario agregado: ' + jsonData.user);
-          
+          const crc32Value = crc32(JSON.stringify(usersData));
+          this.DownlinkStatus(crc32Value+crc32Control)
         
           // Agregar un retraso de 2 segundos (2000 milisegundos)
           setTimeout(() => {
@@ -550,4 +559,24 @@ class BluetoothTerminal {
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
   module.exports = BluetoothTerminal;
+}
+
+function crc32(str) {
+  const table = [];
+  for (let i = 0; i < 256; i++) {
+      let c = i;
+      for (let j = 0; j < 8; j++) {
+          c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+      }
+      table[i] = c;
+  }
+
+  let crc = 0 ^ -1;
+  for (let i = 0; i < str.length; i++) {
+      crc = (crc >>> 8) ^ table[(crc ^ str.charCodeAt(i)) & 0xFF];
+  }
+
+  // Convierte el valor CRC32 a hexadecimal
+  const crc32Hex = (crc ^ -1) >>> 0; // Valor sin signo
+  return crc32Hex.toString(16).toUpperCase(); // Representación hexadecimal en mayúsculas
 }

@@ -414,6 +414,11 @@ terminal.receivestatus = function(data) {
   }
 };
 
+terminal.DownlinkStatus = function(data) {
+  // console.log(data);
+
+  terminal.send(data)
+};
 // Override default log method to output messages to the terminal and console.
 terminal._log = function(...messages) {
   messages.forEach((message) => {
